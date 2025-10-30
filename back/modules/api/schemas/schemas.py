@@ -45,8 +45,8 @@ class UserLoginData(BaseModel):
     login: str
     password: str
 
-class UserImportData(BaseModel):
-    csv_users: str
+class CsvImportData(BaseModel):
+    csv_data: str
 
 
 DateTimeHeader = Annotated[datetime, Header(convert_underscores=False)]
@@ -62,3 +62,9 @@ class EventCreationScheme(BaseModel):
     multiple: bool = False
     name: str
     description: str
+
+
+
+class EventActivationScheme(BaseModel):
+    event_id: int
+    subject_id: int

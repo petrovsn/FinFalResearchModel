@@ -93,7 +93,7 @@ class ImportUsersFromCsv(UseCase):
             rows = csv_data_bytes.split('\n')
             #формат данных - логин, пароль, роль
             
-            for row in rows:
+            for row in rows[1:]:
                 if row == "": continue
                 login, name, password, role = row.strip().split(';')
                 role = UserRole(role)

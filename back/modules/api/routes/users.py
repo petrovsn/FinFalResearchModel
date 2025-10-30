@@ -1,7 +1,7 @@
 from fastapi import Depends, APIRouter, Header
 from typing import Optional
 import json
-from modules.api.schemas.schemas import CreateUserSchema, UserImportData
+from modules.api.schemas.schemas import CreateUserSchema, CsvImportData
 from modules.assembler.assembler import get_InfrastuctureAssemblyParams
 from modules.core.entities import User, UserRole
 from modules.core.use_cases.base_case import UseCase, logging_decorator, UseCaseFactory
@@ -84,9 +84,9 @@ async def put_change_user(
 
 
 @user_router.post("/import")
-async def import_users(userimportdata: UserImportData, 
+async def import_users(userimportdata: CsvImportData, 
                    infrastucture_params: dict = Depends(get_InfrastuctureAssemblyParams), 
                    user_request_data=Depends(AuthService().has_role([UserRole.MASTER]))):
     case:ImportUsersFromCsv = UseCaseFactory.get(ImportUsersFromCsv,  infrastucture_params, user_request_data)
-    await case.execute(userimportdata.csv_users)
+    await case.execute(userimportdata.csv_data)
     return

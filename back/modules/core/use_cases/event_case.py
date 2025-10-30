@@ -13,7 +13,9 @@ from typing import List, Dict
 from modules.bio_engine.mako_engine import MakoEngine, TissueEvolutionData
 from modules.core.use_cases.subject_case import SetSubjectStatusCase, UpdateSubjectStatsHistory
 from modules.utils.config_loader import ConfigLoader
+from modules.utils.logger import Logger
 from modules.utils.random_generator import get_random_string
+import base64
 
 class GetEvents(UseCase):
     async def execute(self, filters, offset, count, sorting_key, sorting_desc):
@@ -37,13 +39,50 @@ class CreateEvent(UseCase):
         self.events_repo.save(event)
 
 class ImportEvents(UseCase):
-    async def execute(self):
-        pass
+    @logging_decorator
+    async def execute(self, csv_data_b64: str):
+        parsed_data  = [] 
+        
+        try:
+            print(csv_data_b64)
+            csv_data_bytes = base64.b64decode(csv_data_b64).decode(encoding='utf-8')
+            rows = csv_data_bytes.split('\n')
+            #формат данных - логин, пароль, роль
+            
+            for row in rows[1:]:
+                if row == "": continue
+                name, event_type, multiple, description = row.strip().split(';')
+                parsed_data.append(EventCreationScheme(
+                    event_type = event_type,
+                    multiple = multiple,
+                    name = name, 
+                    description = description,
+                ))
+                
+        except Exception as e:
+            raise BaseCustomException("wrong table format")
+
+        for event_data in parsed_data:
+            case: CreateEvent = self.get_case(CreateEvent)
+            try:
+                await case.execute(event_data)
+            except Exception as e:
+                Logger().warning(self.request_data.login,
+                                 self.request_data.url,
+                                 "import events",
+                                 csv_data_b64,
+                                 "error", str(e))
 
 class ExportEvents(UseCase):
     async def execute(self):
         pass
 
+class EventActivate(UseCase):
+    async def execute(self, subject_id, event_id):
+        event: Event = self.events_repo.get_by_id(event_id)
+        if not event: raise ObjectNonExists(event)
+        event_input_case = self.get_case(EventInput)
+        await event_input_case.execute(subject_id,event.code)
 
 class EventInput(UseCase):
     @logging_decorator
@@ -51,7 +90,7 @@ class EventInput(UseCase):
         event_code: Event = self.events_repo.get_by_code(event_code)
         if event_code == None: return
         class_type = ProceedStim
-        if event_code.code_type == EventType.STORY:
+        if event_code.event_type == EventType.STORY:
             class_type = ProceedStoryPoint
         case = self.get_case(class_type)
         await case.execute(subject_id, event_code)
@@ -59,10 +98,11 @@ class EventInput(UseCase):
 
 class ProceedStoryPoint(UseCase):
     @logging_decorator
-    async def execute(self, subject_id, event_code:Event):
-        pass
+    async def execute(self, subject_id, event:Event):
+        subject:Subject = self.subject_repo.get_by_id(subject_id)
+        event.append_user(subject.name)
     
 class ProceedStim(UseCase):
     @logging_decorator
-    async def execute(self, subject_id, event_code:Event):
+    async def execute(self, subject_id, event:Event):
         pass

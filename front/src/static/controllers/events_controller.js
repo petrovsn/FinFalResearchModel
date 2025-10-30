@@ -13,7 +13,7 @@ class EventsTableController extends CommonTableController{
         })
     }
     get_keys = () =>{
-        return ["id", "code", "event_type", "name", "description", "multiple", "subjects"]
+        return ["id", "code", "event_type", "name", "description", "multiple"]
     }
 
     update_content = () =>{

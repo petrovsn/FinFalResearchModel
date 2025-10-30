@@ -335,7 +335,7 @@ export class FinFalResearchCenter {
             'Authorization': `Bearer ${this.token}`,
         }
         let body = {
-            "csv_users": csv_users,
+            "csv_data": csv_users,
         }
 
         let data = await http_request(url + `/users/import`, "POST", header, body)
@@ -525,6 +525,33 @@ export class FinFalResearchCenter {
         }
 
         let data = await http_request(url + `/events`, "POST", header, body)
+        return data
+    }
+
+    async put_activate_event(event_id, subject_id){
+        let url = config_loader.get_server_url()
+        let header = {
+            'Authorization': `Bearer ${this.token}`,
+        }
+        let body = {
+            "event_id": event_id,
+            "subject_id": subject_id,
+        }
+
+        let data = await http_request(url + `/events`, "PUT", header, body)
+        return data
+    }
+
+    async import_events_csv(csv_users) {
+        let url = config_loader.get_server_url()
+        let header = {
+            'Authorization': `Bearer ${this.token}`,
+        }
+        let body = {
+            "csv_data": csv_users,
+        }
+
+        let data = await http_request(url + `/events/import`, "POST", header, body)
         return data
     }
 }

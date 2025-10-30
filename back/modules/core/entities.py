@@ -1,5 +1,6 @@
 
-from datetime import datetime, timedelta
+from typing import Dict
+from datetime import datetime, timedelta, timezone
 from re import I
 from tkinter import DISABLED
 from typing import List
@@ -302,7 +303,7 @@ class Event(BaseModel):
     used: bool = False
     name: str
     description: str
-    subjects: List[str] = []
+    subjects: Dict[str, List[datetime]] = {}
 
     def set_used(self):
         if self.multiple == False:
@@ -310,6 +311,18 @@ class Event(BaseModel):
 
     def is_used(self):
         return self.used
+    
+    def append_user(self, subject_name):
+        if self.is_used():
+            if not self.multiple:
+                return
+            
+        if subject_name not in self.subjects:
+            self.subjects[subject_name] = []
+        self.subjects[subject_name].append(datetime.now(timezone.utc))
+        self.set_used()
+        
+        
     
 
     
