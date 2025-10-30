@@ -1,0 +1,53 @@
+from modules.core.use_cases import UserUseCases
+from modules.infrastructure.db.engine import async_session_maker
+from modules.infrastructure.db.cruds import UsersCRUDImpl
+from modules.core.use_cases import TaskUseCases
+from modules.infrastructure.db.cruds import  TasksCRUDImpl
+from modules.infrastructure.crypto.hasher import MockHasherImpl
+
+
+# данный класс управляет сборками конкретных реализаций
+# он зависит от всех доступных реализаций, интерфейсов и бизнес-логики
+# возвращает инициализированные с помощью конкретных реализаций классы бизнес-логики
+# от него зависят FastAPI эндпойнты
+class UserUseCasesImplementation:
+    async def __aenter__(self):
+        print("Асинхронный вход в контекст")
+        self.session = async_session_maker()
+        users_crud_impl = UsersCRUDImpl(self.session)
+        
+        return UserUseCases(users_crud_impl, MockHasherImpl)
+
+    async def __aexit__(self, exc_type, exc_value, traceback):
+        print("Асинхронный выход из контекста")
+        await self.session.close()
+        if exc_type is not None:
+            print(f"Произошло исключение: {exc_value}")
+        # Если вернуть True, исключение будет подавлено
+        return True
+    
+async def get_UserUseCasesImplementation_context():
+    async with UserUseCasesImplementation() as context:
+        yield context
+
+
+class TaskUseCasesImplementation:
+    async def __aenter__(self):
+        print("Асинхронный вход в контекст")
+        self.session = async_session_maker()
+        users_crud_impl = UsersCRUDImpl(self.session)
+        tasks_crud_impl = TasksCRUDImpl(self.session)
+        return TaskUseCases(tasks_crud_impl, users_crud_impl)
+
+    async def __aexit__(self, exc_type, exc_value, traceback):
+        print("Асинхронный выход из контекста")
+        await self.session.close()
+        if exc_type is not None:
+            print(f"Произошло исключение: {exc_value}")
+        # Если вернуть True, исключение будет подавлено
+        return True
+    
+
+async def get_TaskUseCasesImplementation_context():
+    async with TaskUseCasesImplementation() as context:
+        yield context

@@ -1,0 +1,11 @@
+.ResearchPage {
+    display: flex;
+    flex-direction: row;
+}
+
+.Influence {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-left: 10px;
+}

@@ -1,0 +1,33 @@
+.KeyUsageViewer {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.KeyUsageViewer>label{
+    margin-right: 60px;
+}
+
+
+.KeyUsageViewer_block {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.KeyUsageViewer_block>label{
+    margin-right: 10px
+}
+
+.PKeyViewer{
+    display: flex;
+    flex-direction: row;
+}
+
+.PKeyViewer>.pkey_label{
+    min-width: 180px
+}
+
+.PKeyViewer>.pkey_content{
+    white-space: pre-line;
+}

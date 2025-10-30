@@ -1,0 +1,43 @@
+import { store } from "../storage/storage"
+import { finfal_rc } from "../backend_api";
+import { registerTable } from "../storage/storage";
+import { createTableSlice } from "../storage/slices/tableSlice";
+import { addTableReducer } from "../storage/storage";
+import { CommonTableController } from "./common_table_controller";
+
+class EventsTableController extends CommonTableController{
+    constructor(){
+        super("events")
+        this.set_filters({
+            "type":null,
+        })
+    }
+    get_keys = () =>{
+        return ["id", "code", "event_type", "name", "description", "multiple", "subjects"]
+    }
+
+    update_content = () =>{
+        finfal_rc.get_events(
+            null,
+            this.filters["offset"],
+            this.filters["count"],
+            this.sorting
+        ).then((data) => {
+            for(let i in data){
+                data[i]["multiple"] = data[i]["multiple"]?"True":"False"
+            }
+            store.dispatch(this.actions.set_content(data))
+          })
+    }
+
+    get_available_actions = () =>{
+        let selected_item = this.get_selected_item()
+        if (selected_item==null) return []
+        if (!("id" in selected_item)) return []
+        if (selected_item["is_active"])
+            return ["set_role", "ban",  "delete"]
+        return ["set_role", "unban", "delete"]
+    }
+}
+
+export const events_table_controller = new EventsTableController()

@@ -1,0 +1,18 @@
+.MasterPage {
+    display: flex;
+    flex-direction: column;
+}
+
+.EvolutionWidget {
+    border: 1px solid black;
+    padding: 5px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.tissue_evo_block{
+    width: 200px;
+    border: 1px solid black;
+    padding: 5px;
+}

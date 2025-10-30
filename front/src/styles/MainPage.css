@@ -1,0 +1,59 @@
+*{
+    font-size: small;
+
+}
+
+button{
+    border: 1px solid grey;
+}
+
+.MainPage{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.ContentZone{
+    width: 100%;
+    margin-right: 10px;
+}
+
+.MainPage_content{
+    display: flex;
+    flex-direction: row;
+}
+
+.Navigation{
+    padding-left: 30px;
+    display: flex;
+    flex-direction: row;
+    gap: 20px ;
+}
+
+.Navigation .tab_active{
+    color: red;
+}
+.Navigation li{
+    margin-bottom: 5px;
+}
+
+
+
+.ActionPanel{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+    gap:10px;
+}
+
+button{
+    border-color: gray;
+    border-radius: 5px; /* Скругление */
+}
+
+
+.CsrUploader_body{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}

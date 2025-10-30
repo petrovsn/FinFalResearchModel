@@ -1,0 +1,25 @@
+.SubjectsWidget{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    overflow: scroll;
+    height: 700px;
+    width: 220px;
+}
+.SubjectCard{
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    border: 1px solid black;
+    padding: 10px;
+}
+
+.SubjectCard_selected{
+    border: 5px solid red !important;
+}
+
+
+.SubjectHistoryViewer_table_roller{
+    overflow: scroll;
+    height: 400px;
+}

@@ -1,0 +1,21 @@
+.LoginPage{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-left: 40%;
+    padding-right: 40%;
+    padding-top: 10%;
+}
+
+.LoginPage img{
+    margin-bottom: 20px;
+    height: 50%;
+    width: 50%;
+}
+
+
+.CA_name_label{
+    font-size: 50px;
+    font-weight: 500;
+    margin-bottom: 10px;
+}

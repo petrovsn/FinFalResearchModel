@@ -1,0 +1,87 @@
+input[type="checkbox"] {
+    width: fit-content !important;
+}
+.InputFieldWidget{
+    display: flex;
+    flex-direction: column;
+    height: 40px;
+    width: 100%;
+}
+
+.InputFieldWidget_checkbox{
+    width: 70px !important;
+}
+
+.InputFieldWidget .content_line{
+    display: flex;
+    flex-direction: row;
+}
+
+
+.InputFieldWidget .content_line label, .SelectorFilter .content_line label{
+    white-space: nowrap;
+    width: fit-content;
+    margin-right: 20px;
+}
+
+.InputFieldWidget .content_line input, .SelectorFilter .content_line .css-b62m3t-container{
+    width: 100%;
+}
+
+.InputFieldWidget .content_line select{
+    width: 100%;
+}
+
+.InputFieldWidget .warning_line{
+    padding-left: 140px;
+}
+
+.InputFieldWidget .warning_line{
+    font-size: xx-small;
+    color: red
+}
+
+.SelectorFilter{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.SelectorFilter .content_line{
+    display: flex;
+    flex-direction: row;
+}
+
+.react-select__control {
+  border: 1px solid #ccc !important;
+  min-height: 38px;
+  border-radius: 4px !important;
+}
+
+/* Стиль при наведении */
+.react-select__control:hover {
+  border-color: #999 !important;
+}
+
+/* Стиль при фокусе (черная рамка) */
+.react-select__control--is-focused {
+  border-color: black !important;
+  box-shadow: 0 0 0 1px black !important;
+}
+
+.content_line_slider{
+    display: flex;
+    flex-direction: row;
+    align-content:end;
+}
+
+.content_line_slider label{
+    width: 30px !important;
+    min-width: 50px !important; 
+}
+
+input[type="range"] {
+    width: 100px !important;
+    min-width: 100px !important; 
+}

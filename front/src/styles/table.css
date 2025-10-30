@@ -1,0 +1,58 @@
+.CustomTable{
+    border: 1px solid black;
+    border-left: 1px lightgrey solid;
+}
+
+.table_row_marked{
+    border: 1px solid red !important;
+    color:  red;
+}
+
+.CustomTable{
+    width: 100%
+}
+
+.CustomTablePagingButtons{
+    margin-top: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.CustomTablePagingButtons > label{
+    border: 1px solid gray;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.CustomTablePagingButtons .row_count_block{
+    display: flex;
+    flex-direction: row;
+    margin-left: 10px;
+    gap: 5px;
+}
+
+.CustomTablePagingButtons button{
+    border: None;
+    background-color: white;
+}
+
+th{
+    text-align: center;
+    border-right: 1px lightgrey solid;
+}
+
+td {
+  max-width: 150px;            /* Максимальная ширина ячейки */
+  white-space: nowrap;         /* Запрет переноса на новую строку */
+  overflow: hidden;            /* Скрыть всё, что не помещается */
+  text-overflow: ellipsis;     /* Добавить многоточие */
+  text-align: center;
+  border-right: 1px lightgrey solid;
+}
+
+.table_actions_block{
+    display: flex;
+    gap: 10px;
+    margin-bottom: 5px;
+}
