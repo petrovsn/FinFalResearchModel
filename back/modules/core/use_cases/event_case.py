@@ -87,20 +87,25 @@ class EventActivate(UseCase):
 class EventInput(UseCase):
     @logging_decorator
     async def execute(self, subject_id, event_code):
-        event_code: Event = self.events_repo.get_by_code(event_code)
-        if event_code == None: return
+        event: Event = self.events_repo.get_by_code(event_code)
+        if event == None: return
+
+        subject:Subject = self.subject_repo.get_by_id(subject_id)
+        event.append_user(subject.name)
+        self.events_repo.update(event.id, event)
+
+        
         class_type = ProceedStim
-        if event_code.event_type == EventType.STORY:
+        if event.event_type == EventType.STORY:
             class_type = ProceedStoryPoint
         case = self.get_case(class_type)
-        await case.execute(subject_id, event_code)
+        await case.execute(subject_id, event)
     
 
 class ProceedStoryPoint(UseCase):
     @logging_decorator
-    async def execute(self, subject_id, event:Event):
-        subject:Subject = self.subject_repo.get_by_id(subject_id)
-        event.append_user(subject.name)
+    async def execute(self, subject_id, event:Event):   
+        pass
     
 class ProceedStim(UseCase):
     @logging_decorator

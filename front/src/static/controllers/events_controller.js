@@ -13,7 +13,20 @@ class EventsTableController extends CommonTableController{
         })
     }
     get_keys = () =>{
-        return ["id", "code", "event_type", "name", "description", "multiple"]
+        return ["id", "code", "event_type", "name", "description", "multiple", "used", "subjects"]
+    }
+
+    get_content() {
+        let result = JSON.parse(JSON.stringify(this.content_data.content))
+        for(let i in result){
+            let tmp = ""
+            for(let k in result[i]["subjects"]){
+                tmp = tmp+k+" "
+            }
+            result[i]["subjects"] = tmp
+            result[i]["used"] = result[i]["used"].toString()
+        }
+        return result
     }
 
     update_content = () =>{
