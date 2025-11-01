@@ -3,6 +3,7 @@ from typing import Type
 from modules.core.entities import UserRequestInfo, UserRole
 from modules.db.repos.assign_repo import AssignRepo
 from modules.db.repos.events_repo import EventsRepo
+from modules.db.repos.mut_process_repo import MutProcessRepo
 from modules.db.repos.mutation_repo import MutationRepo
 from modules.db.repos.scilog_repo import SciLogRepo
 from modules.db.repos.statshistory_repo import StatsHistoryRepo
@@ -46,7 +47,7 @@ class UseCase(ABC):
     def __init__(self, subject_repo: SubjectRepo, task_repo: TaskRepo, 
                  scilog_repo: SciLogRepo, users_repo: UserRepo, assign_repo: AssignRepo,
                  stat_history_repo: StatsHistoryRepo, events_repo: EventsRepo,
-                 request_data: UserRequestInfo, mutation_repo:MutationRepo):
+                 request_data: UserRequestInfo, mutation_repo:MutationRepo, mutprocess_repo: MutProcessRepo):
         self.subject_repo: SubjectRepo = subject_repo
         self.task_repo: TaskRepo = task_repo
         self.scilog_repo: SciLogRepo = scilog_repo
@@ -54,6 +55,7 @@ class UseCase(ABC):
         self.request_data:UserRequestInfo = request_data
         self.assign_repo: AssignRepo = assign_repo
         self.stat_history_repo: StatsHistoryRepo = stat_history_repo
+        self.mutprocess_repo: MutProcessRepo = mutprocess_repo
         self.mutation_repo:MutationRepo = mutation_repo
         self.events_repo: EventsRepo = events_repo
         
@@ -69,6 +71,7 @@ class UseCase(ABC):
             "assign_repo":self.assign_repo,
             "request_data": self.request_data,
             "stat_history_repo": self.stat_history_repo,
+            "mutprocess_repo": self.mutprocess_repo,
             "mutation_repo":self.mutation_repo,
             "events_repo": self.events_repo
         }

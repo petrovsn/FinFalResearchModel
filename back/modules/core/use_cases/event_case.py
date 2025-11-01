@@ -5,7 +5,7 @@ import random
 from sklearn.feature_selection import mutual_info_classif
 from modules.api.schemas.schemas import EventCreationScheme
 from modules.bio_engine.mental_engine import MentalEngine
-from modules.core.entities import Event, EventType, MakoEnergy, MemoriesData, MutationClass, MutationProcess, MutationStatus, Subject, MakoInjection, SubjectStatus, Task, UserRole
+from modules.core.entities import Event, EventType,Subject, MakoInjection, SubjectStatus, Task, UserRole
 from modules.core.exceptions import BaseCustomException, ObjectNonExists
 from modules.core.scilog import SciLogRecord
 from modules.core.use_cases.base_case import UseCase, logging_decorator

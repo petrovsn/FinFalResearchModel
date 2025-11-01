@@ -95,7 +95,7 @@ class ImportUsersFromCsv(UseCase):
             
             for row in rows[1:]:
                 if row == "": continue
-                login, name, password, role = row.strip().split(';')
+                login, password, name, role = row.strip().split(';')
                 role = UserRole(role)
                 if role not in UserRole:
                     raise BaseCustomException("wrong table format")

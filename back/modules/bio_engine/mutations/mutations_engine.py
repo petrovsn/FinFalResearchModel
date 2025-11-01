@@ -2,17 +2,6 @@ from collections import Counter
 from modules.utils.config_loader import ConfigLoader
 
 
-class Mutation:
-    def __init__(self, name = "", description = "", tags = None, effects =None):
-        self.name = name
-        self.description = description
-        self.tags = tags
-        self.effects = effects #[]
-        
-    def from_json():
-        pass
-
-    
 class MutationsEngine:
     def get_mutations(subject_id,old_cell_stability, new_cell_stability):
         mut_tresholds = ConfigLoader().get_mutation_tresholds()
@@ -25,3 +14,5 @@ class MutationsEngine:
             result["hard"] = result["hard"]+1
 
         return result
+    
+

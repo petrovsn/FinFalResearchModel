@@ -75,7 +75,7 @@ class StatsHistory(Base):
 
 
 
-class Mutation(Base):
+class MutationProcess(Base):
     created_at: Mapped[DateTime] = mapped_column(DateTime)
     subject_id: Mapped[int] = mapped_column(Integer)
     subject_name: Mapped[str] = mapped_column(String)
@@ -89,11 +89,18 @@ class Mutation(Base):
     name: Mapped[str] = mapped_column(String)
     status: Mapped[str] = mapped_column(String)
 
+
+class Mutation(Base):
+    name: Mapped[str] = mapped_column(String)
+    description: Mapped[str] = mapped_column(String)
+    effect: Mapped[str] = mapped_column(String)
+    conditions: Mapped[str] = mapped_column(String)
+
 class Event(Base):
-    code: Mapped[str] = mapped_column(String)
+    code: Mapped[str] = mapped_column(String, unique=True)
     event_type: Mapped[str] = mapped_column(String)
     multiple: Mapped[bool] = mapped_column(Boolean)
     used: Mapped[bool] = mapped_column(Boolean)
-    name: Mapped[str] = mapped_column(String)
+    name: Mapped[str] = mapped_column(String, unique=True)
     description: Mapped[str] = mapped_column(String)
     subjects: Mapped[str] = mapped_column(String)

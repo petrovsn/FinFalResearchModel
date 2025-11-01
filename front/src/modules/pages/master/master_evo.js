@@ -5,6 +5,7 @@ import { finfal_rc } from "../../../static/backend_api";
 import { subjects_controller } from "../../../static/controllers/subjects_controller";
 import '../../../styles/master_page.css'
 import { EvolutionWidget } from "../../widgets/evo_widget";
+import { MutationsTable } from "../../widgets/mutations_table";
 export class MasterPage_Evo extends React.Component {
     constructor() {
         super()
@@ -21,6 +22,7 @@ export class MasterPage_Evo extends React.Component {
     render() {
         return <div className="MasterPage">
             <EvolutionWidget />
+            <MutationsTable />
         </div>
     }
 }

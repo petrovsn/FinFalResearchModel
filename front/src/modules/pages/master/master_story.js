@@ -10,7 +10,7 @@ import { ServicesControlWidget } from "../../widgets/services_control_widget";
 import { CustomTableWidget } from "../../widgets/table";
 import { subjects_story_controller } from "../../../static/controllers/subjects_story_controller";
 import { EventsTable } from "../../widgets/events_table";
-import { ActionWrapper } from "../../widgets/action_wrapper";
+import { ActionWrapper } from "../../widgets/abstract/action_wrapper";
 import { modal_controller } from "../../../static/controllers/modal_controller";
 import { events_table_controller } from "../../../static/controllers/events_controller";
 

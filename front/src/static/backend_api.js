@@ -433,7 +433,7 @@ export class FinFalResearchCenter {
         return data
     }
 
-    async get_mutatations(offset, count) {
+    async get_mutatation_processes(offset, count) {
         let url = config_loader.get_server_url()
         let header = {
             'Authorization': `Bearer ${this.token}`,
@@ -442,29 +442,29 @@ export class FinFalResearchCenter {
         if (count != null) header['count'] = count
         let body = {}
 
-        let data = await http_request(url + `/mutations`, "GET", header, body)
+        let data = await http_request(url + `/mut_process`, "GET", header, body)
         return data
     }
 
-    async get_actual_mutation(subject_id) {
+    async get_actual_mutation_process(subject_id) {
         let url = config_loader.get_server_url()
         let header = {
             'Authorization': `Bearer ${this.token}`,
         }
         let body = {}
 
-        let data = await http_request(url + `/subjects/${subject_id}/actual_mutation`, "GET", header, body)
+        let data = await http_request(url + `/subjects/${subject_id}/actual_mutation_process`, "GET", header, body)
         return data
     }
 
-    async get_mutation_remaining_seconds(mutation_id) {
+    async get_mutation_process_remaining_seconds(mutation_id) {
         let url = config_loader.get_server_url()
         let header = {
             'Authorization': `Bearer ${this.token}`,
         }
         let body = {}
 
-        let data = await http_request(url + `/mutations/${mutation_id}/seconds_remain`, "GET", header, body)
+        let data = await http_request(url + `/mut_process/${mutation_id}/seconds_remain`, "GET", header, body)
         return data
     }
 
@@ -475,7 +475,7 @@ export class FinFalResearchCenter {
         }
         let body = {}
 
-        let data = await http_request(url + `/mutations/${mutation_id}/run_supression`, "PUT", header, body)
+        let data = await http_request(url + `/mut_process/${mutation_id}/run_supression`, "PUT", header, body)
         return data
     }
 
@@ -489,9 +489,54 @@ export class FinFalResearchCenter {
             "confirmation_code": confirmation_code
         }
 
-        let data = await http_request(url + `/mutations/${mutation_id}/supression_result`, "PUT", header, body)
+        let data = await http_request(url + `/mut_process/${mutation_id}/supression_result`, "PUT", header, body)
         return data
     }
+
+
+    async get_mutations(offset, count) {
+        let url = config_loader.get_server_url()
+        let header = {
+            'Authorization': `Bearer ${this.token}`,
+        }
+        if (offset != null) header['offset'] = offset
+        if (count != null) header['count'] = count
+        let body = {}
+
+        let data = await http_request(url + `/mutations`, "GET", header, body)
+        return data
+    }
+
+    async post_mutation(name, description, effect, conditions){
+        let url = config_loader.get_server_url()
+        let header = {
+            'Authorization': `Bearer ${this.token}`,
+        }
+        let body = {
+            "name": name,
+            "description":description,
+            "effect":effect,
+            "conditions":[]
+        }
+
+        let data = await http_request(url + `/mutations`, "POST", header, body)
+        return data
+    }
+
+
+    async import_mutations_csv(csv_users) {
+        let url = config_loader.get_server_url()
+        let header = {
+            'Authorization': `Bearer ${this.token}`,
+        }
+        let body = {
+            "csv_data": csv_users,
+        }
+
+        let data = await http_request(url + `/mutations/import`, "POST", header, body)
+        return data
+    }
+
 
     async get_events(not_before, not_after, user, action, result, offset, count, sorting_key) {
         let url = config_loader.get_server_url()

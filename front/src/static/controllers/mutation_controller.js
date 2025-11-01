@@ -12,7 +12,7 @@ class MutationsController extends CommonTableController {
     }
 
     get_keys = () => {
-        return ["id", "created_at", "subject_id", "subject_name", "start_cell_stability", "finish_cell_stability", "mutation_class", "complexity", "result", "name", "status", "confirmation_code"] 
+        return ["id", "name", "description", "effect", "conditions"]
     }
 
 
@@ -22,7 +22,7 @@ class MutationsController extends CommonTableController {
 
     update_content = () => {
 
-        finfal_rc.get_mutatations(
+        finfal_rc.get_mutations(
             this.filters["offset"],
             this.filters["count"],
             this.sorting

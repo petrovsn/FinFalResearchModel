@@ -7,8 +7,9 @@ import { InputSelector, InputString } from "./inputs";
 import { CustomTable, CustomTablePagingButtons, CustomTableWidget } from "./table";
 import { user_table_controller } from "../../static/controllers/user_table_controller";
 import { locales } from "../../static/locales";
-import { ActionWrapper } from "./action_wrapper";
+import { ActionWrapper } from "./abstract/action_wrapper";
 import { modal_controller } from "../../static/controllers/modal_controller";
+import { CsvImporter } from "./abstract/csv_importer";
 export class UsersTable extends React.Component {
     constructor() {
         super()
@@ -169,36 +170,12 @@ export class UserChanger extends ActionWrapper {
     }
 }
 
-class UserCsvImporter extends ActionWrapper {
-    constructor() {
+class UserCsvImporter extends CsvImporter{
+    constructor(){
         super()
         this.state = {
-            "csv_data": null
+            "question":"import_users_question"
         }
-    }
-
-    uploadCsvContent = (event) => {
-        let csv_texts = []
-        if (event.target.files.length > 0) {
-            let reader = new FileReader()
-            reader.readAsDataURL(event.target.files[0]);
-            reader.onload = () => {
-                console.log(reader.result)
-                csv_texts.push(reader.result)
-                let text = reader.result.split("data:text/csv;base64,")[1]
-                this.setState({ "csv_data": text })
-            }
-        }
-    }
-
-    get_action_text = () => {
-        return <div className="CsrUploader_body">
-            <input type="file" accept=".csv" onChange={this.uploadCsvContent} multiple />
-        </div>
-    }
-
-    on_close = () => {
-        modal_controller.hide()
     }
 
     on_import = () => {
@@ -211,19 +188,5 @@ class UserCsvImporter extends ActionWrapper {
                 console.log(data["content"])
                 this.onError(data["content"])
             })
-    }
-
-    get_buttons_panel = () => {
-        return <div className="modal_action_btn_panel">
-            <button onClick={this.on_close}>{locales.get("close")}</button>
-            <button disabled={this.state.csv_data == null} onClick={this.on_import}>{locales.get("import")}</button>
-        </div>
-    }
-    render() {
-        return <div className="UserActionTemplate">
-            <h3>{locales.get("import_users_question")}</h3>
-            {this.get_action_text()}
-            {this.get_buttons_panel()}
-        </div>
     }
 }

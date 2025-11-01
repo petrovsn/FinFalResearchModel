@@ -12,6 +12,7 @@ from modules.api.routes.tasks import task_router
 from modules.api.routes.users import user_router
 from modules.api.routes.admin import admin_router
 from modules.api.routes.assignments import assignment_router
+from modules.api.routes.mut_process import mut_process_router
 from modules.api.routes.mutations import mutations_router
 from modules.api.routes.events import events_router
 
@@ -40,6 +41,7 @@ app.include_router(task_router)
 app.include_router(user_router)
 app.include_router(admin_router)
 app.include_router(assignment_router)
+app.include_router(mut_process_router)
 app.include_router(mutations_router)
 app.include_router(events_router)
 

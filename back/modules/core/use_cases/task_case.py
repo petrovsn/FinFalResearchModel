@@ -6,7 +6,7 @@ from modules.core.exceptions import BaseCustomException
 from modules.core.scilog import SciLogRecord
 from modules.core.use_cases.base_case import UseCase, logging_decorator
 from modules.core.entities import MakoEnergy, Subject, MakoInjection, SubjectStatus, Task, TaskStatus
-from modules.core.use_cases.mutations_case import GenerateMutation
+from modules.core.use_cases.mutations_case import GenerateMutProcess
 from modules.core.use_cases.subject_case import UpdateSubjectStatsHistory
 from modules.utils.config_loader import ConfigLoader
 
@@ -107,7 +107,7 @@ class ProceedMakoInjection(UseCase):
 
         #ПОМЕНЯТЬ ПОЗЖЕ
         if old_cell_stability!= new_cell_stability:
-            generate_mutation = self.get_case(GenerateMutation)
+            generate_mutation = self.get_case(GenerateMutProcess)
             await generate_mutation.execute(subject, old_cell_stability, new_cell_stability)
         #mutations_counter = MakoEngine.get_mutations(old_cell_stability, new_cell_stability)
         #case = GenerateMutation(**self.get_infrastructure_copy())

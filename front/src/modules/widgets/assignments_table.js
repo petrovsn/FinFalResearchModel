@@ -6,7 +6,7 @@ import { subjects_controller } from "../../static/controllers/subjects_controlle
 import { InputSelector, InputString } from "./inputs";
 import { CustomTable, CustomTablePagingButtons, CustomTableWidget } from "./table";
 import { locales } from "../../static/locales";
-import { ActionWrapper } from "./action_wrapper";
+import { ActionWrapper } from "./abstract/action_wrapper";
 import { modal_controller } from "../../static/controllers/modal_controller";
 import { assign_table_controller } from "../../static/controllers/assign_table_controller";
 

@@ -10,7 +10,7 @@ import { locales } from "../../static/locales";
 import { AssignChanger } from "./assignments_table";
 import { modal_controller } from "../../static/controllers/modal_controller";
 import { scilog_table_controller } from "../../static/controllers/log_controller";
-import { ActionWrapper } from "./action_wrapper";
+import { ActionWrapper } from "./abstract/action_wrapper";
 export class SubjectsTable extends React.Component {
     constructor() {
         super()
@@ -583,7 +583,7 @@ class MakoInjectionResult extends React.Component {
     }
 }
 
-class MutationProceederViewer extends React.Component {
+class MutationProceederViewer extends ActionWrapper {
     constructor() {
         super()
         this.state = {
@@ -618,8 +618,11 @@ class MutationProceederViewer extends React.Component {
 
     on_supress_mutation = () =>{
         finfal_rc.supress_mutation(this.state.id,this.state.supression_points, this.state.confirmation_code)
-        .then()
-        .catch()
+        .then(data=>{modal_controller.hide()})
+        .catch(data=>{
+            console.log("on_supress_mutation", data)
+            this.onError(data.content)
+        })
     }
 
     get_body = () => {

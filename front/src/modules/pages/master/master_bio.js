@@ -6,7 +6,7 @@ import { subjects_controller } from "../../../static/controllers/subjects_contro
 import '../../../styles/master_page.css'
 import { SubjectsTable } from "../../widgets/subjects_table";
 import { TasksTable } from "../../widgets/tasks_table";
-import { MutationsTable } from "../../widgets/mutations_table";
+import { MutProcessesTable } from "../../widgets/mutations_table";
 export class MasterPage_Bio extends React.Component {
     constructor() {
         super()
@@ -24,7 +24,7 @@ export class MasterPage_Bio extends React.Component {
         return <div className="MasterPage">
              <SubjectsTable mode = {"master"}/>
              <TasksTable/>
-             <MutationsTable/>
+             <MutProcessesTable/>
         </div>
     }
 }

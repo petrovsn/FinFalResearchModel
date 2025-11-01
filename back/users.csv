@@ -1,13 +1,13 @@
 login;password;name;role
 s1;s1;s1;subject
-s2;s2;s2;subject
-s3;s3;s3;subject
+s2;s2;Топор;subject
+s3;Топор;s3;subject
 s4;s4;s4;subject
 s5;s5;s5;subject
-s6;s6;s6;subject
+s6;Судак;Судак;subject
 s7;s7;s7;subject
 s8;s8;s8;subject
-s9;s9;s9;subject
+s9;Енот;Енот;subject
 s10;s10;s10;subject
 s11;s11;s11;subject
 s12;s12;s12;subject

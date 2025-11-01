@@ -126,7 +126,7 @@ class Subject(BaseModel):
         self.mutations.append(new_mutation)
 
 
-class MutationStatus(str, Enum):
+class MutProcessStatus(str, Enum):
     CREATED = "created"
     IN_SUPRESSIOM = "in_supression"
     SUPRESSED = "supressed"
@@ -150,7 +150,7 @@ class MutationProcess(BaseModel):
     supression_start: datetime|None = None
     confirmation_code: str|None = None
     name: str = ""
-    status: MutationStatus = MutationStatus.CREATED
+    status: MutProcessStatus = MutProcessStatus.CREATED
 
     def get_seconds_remain(self):
         if not self.supression_start: return None
@@ -159,13 +159,17 @@ class MutationProcess(BaseModel):
         seconds_left = supressing_time.seconds - current_dt.seconds
         return max(seconds_left,0)
 
-
+class Mutation(BaseModel):
+    id: int|None = None
+    name: str
+    description: str
+    effect: str
+    conditions: List[str]
 
 class TaskStatus(str, Enum):
     ACTIVE = "active"
     COMPLETE = "complete"
     CANCELLED = "cancelled"
-
 
 class Task(BaseModel):
     id: int|None = None

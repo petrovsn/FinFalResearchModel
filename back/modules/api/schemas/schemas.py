@@ -68,3 +68,9 @@ class EventCreationScheme(BaseModel):
 class EventActivationScheme(BaseModel):
     event_id: int
     subject_id: int
+
+class MutationCreationScheme(BaseModel):
+    name: str
+    description: str
+    effect: str
+    conditions: List[str]
