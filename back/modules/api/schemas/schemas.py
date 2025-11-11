@@ -72,5 +72,4 @@ class EventActivationScheme(BaseModel):
 class MutationCreationScheme(BaseModel):
     name: str
     description: str
-    effect: str
     conditions: List[str]

@@ -4,6 +4,7 @@ from typing import List
 from psutil import users
 from sqlalchemy import false
 from modules.bio_engine.mako_engine import MakoEngine
+from modules.bio_engine.mutations.mutations_engine import MutationsEngine
 from modules.core.entities import Stats, StatsHistory, Subject, SubjectAssignment, SubjectOut, SubjectShortData, SubjectStatus, User, UserRole
 from modules.core.exceptions import BaseCustomException, ObjectNonExists
 from modules.core.use_cases.base_case import UseCase, logging_decorator
@@ -25,7 +26,7 @@ class GetFullSubjectInfoCase(UseCase):
         subject_out.stats_reaction = stats.stats_reaction
         subject_out.stats_strength = stats.stats_strength
 
-        #MutationsController.apply_mutations(subject_out)
+        subject_out = MutationsEngine().apply_mutations_at_get_subject_info(subject_out)
 
         return subject_out
         

@@ -507,7 +507,7 @@ export class FinFalResearchCenter {
         return data
     }
 
-    async post_mutation(name, description, effect, conditions){
+    async post_mutation(name, description, conditions){
         let url = config_loader.get_server_url()
         let header = {
             'Authorization': `Bearer ${this.token}`,
@@ -515,7 +515,6 @@ export class FinFalResearchCenter {
         let body = {
             "name": name,
             "description":description,
-            "effect":effect,
             "conditions":[]
         }
 

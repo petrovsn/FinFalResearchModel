@@ -93,7 +93,6 @@ class MutationProcess(Base):
 class Mutation(Base):
     name: Mapped[str] = mapped_column(String)
     description: Mapped[str] = mapped_column(String)
-    effect: Mapped[str] = mapped_column(String)
     conditions: Mapped[str] = mapped_column(String)
 
 class Event(Base):

@@ -1,7 +1,12 @@
 name;event_type;multiple;description
-e1_story;story;0;русскийтекст
+e1_story;story;0;СЂСѓСЃСЃРєРёР№С‚РµРєСЃС‚
 e2_story;story;1;description
 e3_story;story;1;description
 s1_stim;stim;0;description
 s2_stim;stim;0;description
-s2_stim;stim;0;description
+IncreaseStrength1;story;1;Совершил поступок 1
+IncreaseReaction1;story;1;Совершил поступок 2
+IncreaseHealth1;story;1;Совершил поступок 3
+DecreaseStrength1;story;1;Совершил поступок 4
+DecreaseReaction1;story;1;Совершил поступок 5
+DecreaseHealth1;story;1;Совершил поступок 6

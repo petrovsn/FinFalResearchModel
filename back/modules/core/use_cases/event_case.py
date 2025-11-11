@@ -24,6 +24,7 @@ class GetEvents(UseCase):
 
 
 class CreateEvent(UseCase):
+    @logging_decorator
     async def execute(self, event_data: EventCreationScheme):
         code = get_random_string(8)
         code = "I_"+code 
@@ -52,6 +53,7 @@ class ImportEvents(UseCase):
             for row in rows[1:]:
                 if row == "": continue
                 name, event_type, multiple, description = row.strip().split(';')
+                print(name, event_type, multiple, description)
                 parsed_data.append(EventCreationScheme(
                     event_type = event_type,
                     multiple = multiple,

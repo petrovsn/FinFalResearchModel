@@ -82,7 +82,6 @@ class MutationCreator extends ActionWrapper{
         this.state = {
             name:"",
             description:"",
-            effect:"",
             conditions:""
         }
     }
@@ -90,7 +89,6 @@ class MutationCreator extends ActionWrapper{
     on_create = () =>{
         finfal_rc.post_mutation(this.state.name,
             this.state.description,
-            this.state.effect,
             this.state.conditions)
         .then(modal_controller.hide)
         .catch(data=>{this.onError(data.content)})
@@ -106,10 +104,6 @@ class MutationCreator extends ActionWrapper{
             label = "description"
             value = {this.state.description}
             onChange = {v=>{this.setState({"description":v})}}/>
-            <InputString 
-            label = "effect"
-            value = {this.state.effect}
-            onChange = {v=>{this.setState({"effect":v})}}/>
             <InputString 
             label = "conditions"
             value = {this.state.conditions}

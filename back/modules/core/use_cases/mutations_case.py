@@ -1,6 +1,6 @@
 from copy import deepcopy
 from  datetime import datetime
-from logging import Logger
+from modules.utils.logger import Logger
 import random
 import base64
 from modules.api.schemas.schemas import MutationCreationScheme
@@ -110,7 +110,6 @@ class CreateMutation(UseCase):
         mutation_obj = Mutation(
                 name = data.name,
                 description = data.description, 
-                effect = data.effect,
                 conditions = data.conditions
         )
         self.mutation_repo.save(mutation_obj)
@@ -131,12 +130,10 @@ class ImportMutations(UseCase):
                 row_splitted = row.strip().split(';')
                 name = row_splitted[0]
                 description = row_splitted[1]
-                effect = row_splitted[2]
-                conditions = row_splitted[3:]
+                conditions = row_splitted[2:]
                 parsed_data.append(MutationCreationScheme(
                     name = name,
                     description = description,
-                    effect = effect, 
                     conditions = conditions,
                 ))
                 

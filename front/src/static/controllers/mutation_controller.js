@@ -12,9 +12,8 @@ class MutationsController extends CommonTableController {
     }
 
     get_keys = () => {
-        return ["id", "name", "description", "effect", "conditions"]
+        return ["id", "name", "description", "conditions"]
     }
-
 
     on_select = (item) => {
         store.dispatch(this.actions.select_item(item))
