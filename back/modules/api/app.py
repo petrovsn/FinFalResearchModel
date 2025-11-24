@@ -15,6 +15,7 @@ from modules.api.routes.assignments import assignment_router
 from modules.api.routes.mut_process import mut_process_router
 from modules.api.routes.mutations import mutations_router
 from modules.api.routes.events import events_router
+from modules.api.routes.stims import stims_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -44,6 +45,7 @@ app.include_router(assignment_router)
 app.include_router(mut_process_router)
 app.include_router(mutations_router)
 app.include_router(events_router)
+app.include_router(stims_router)
 
 app.middleware("http")(exception_catcher)
 

@@ -37,6 +37,7 @@ export class EventsTable extends React.Component {
 
     render() {
         return <div className="TasksPage">
+            <h3>{locales.get("Story events")}</h3>
             {this.get_button_panel()}
             <CustomTableWidget
                 table_controller={events_table_controller}

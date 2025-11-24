@@ -8,6 +8,7 @@ from modules.bio_engine.mutations.mutations_engine import MutationsEngine
 from modules.core.entities import Stats, StatsHistory, Subject, SubjectAssignment, SubjectOut, SubjectShortData, SubjectStatus, User, UserRole
 from modules.core.exceptions import BaseCustomException, ObjectNonExists
 from modules.core.use_cases.base_case import UseCase, logging_decorator
+from modules.event_engine.event_engine import EventEngine
 from modules.utils.config_loader import ConfigLoader
 
 
@@ -57,6 +58,7 @@ class CreateSubjectCase(UseCase):
     async def execute(self, name):
         subject = Subject(name = name)
         result = self.subject_repo.save(subject)
+        EventEngine().add_user(name)
         return result
 
 class UpdateSubjectCase(UseCase):

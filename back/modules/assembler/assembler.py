@@ -4,6 +4,7 @@ from modules.db.repos.mut_process_repo import MutProcessRepo
 from modules.db.repos.mutation_repo import MutationRepo
 from modules.db.repos.scilog_repo import SciLogRepo
 from modules.db.repos.statshistory_repo import StatsHistoryRepo
+from modules.db.repos.stim_repo import StimsRepo
 from modules.db.repos.task_repo import TaskRepo
 from modules.db.repos.subject_repo import SubjectRepo
 from modules.db.engine import DbEngine
@@ -21,10 +22,12 @@ class InfrastuctureAssemblyParamsContext:
         mutation_repo = MutationRepo(self.session)
         mutprocess_repo =MutProcessRepo(self.session)
         events_repo = EventsRepo(self.session)
+        stims_repo = StimsRepo(self.session)
         #hasher_class = MockHasherImpl
         return {"subject_repo":subject_repo, "task_repo":task_repo, "scilog_repo":scilog_repo, 
                 "users_repo":users_repo, "assign_repo":assign_repo, "stat_history_repo": stat_history_repo,
-                "mutation_repo":mutation_repo, "mutprocess_repo":mutprocess_repo, "events_repo":events_repo}
+                "mutation_repo":mutation_repo, "mutprocess_repo":mutprocess_repo, "events_repo":events_repo,
+                "stims_repo":stims_repo}
 
     def __exit__(self, exc_type, exc_value, traceback):
         self.session.close()

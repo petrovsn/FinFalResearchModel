@@ -42,15 +42,38 @@ class EventsTableController extends CommonTableController{
             store.dispatch(this.actions.set_content(data))
           })
     }
-
-    get_available_actions = () =>{
-        let selected_item = this.get_selected_item()
-        if (selected_item==null) return []
-        if (!("id" in selected_item)) return []
-        if (selected_item["is_active"])
-            return ["set_role", "ban",  "delete"]
-        return ["set_role", "unban", "delete"]
-    }
 }
 
 export const events_table_controller = new EventsTableController()
+
+
+
+class EventsTrackerTableController extends CommonTableController{
+    constructor(){
+        super("events")
+        this.set_filters({
+            "type":null,
+        })
+    }
+    get_keys = () =>{
+        return ["events"]
+    }
+
+
+    update_content = () =>{
+        finfal_rc.get_events_tracking(
+            null,
+            this.filters["offset"],
+            this.filters["count"],
+            this.sorting
+        ).then((data) => {
+            for(let i in data){
+                data[i]["multiple"] = data[i]["multiple"]?"True":"False"
+            }
+            store.dispatch(this.actions.set_content(data))
+          })
+    }
+}
+
+
+export const events_tracker_table_controller = new EventsTrackerTableController()

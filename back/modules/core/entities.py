@@ -41,8 +41,14 @@ class SubjectStatus(str, Enum):
     MUTATION = "mutation"
     DISABLED = "disabled"
 
+class TissueType(str, Enum):
+    NERVES = "nerves"
+    MUSCULES = "muscules"
+    BLOOC = "blood"
+
+
 class Tissue(BaseModel):
-    tissue_type: str
+    tissue_type: TissueType
     current_evo_stage: int = 0
     current_mako_level: int = 0
     
@@ -327,6 +333,13 @@ class Event(BaseModel):
         
         
     
-
-    
+#======================STIMS===================================
+class Stim(BaseModel):
+    id: int|None = None
+    code: str
+    tissue_type: TissueType
+    mako_volume: int
+    used: bool = False
+    tissue_save: Tissue|None = None
+    injected_at: datetime|None = None
 

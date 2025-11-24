@@ -12,6 +12,7 @@ from modules.core.use_cases.base_case import UseCase, logging_decorator
 from typing import List, Dict
 from modules.bio_engine.mako_engine import MakoEngine, TissueEvolutionData
 from modules.core.use_cases.subject_case import SetSubjectStatusCase, UpdateSubjectStatsHistory
+from modules.event_engine.event_engine import EventEngine
 from modules.utils.config_loader import ConfigLoader
 from modules.utils.logger import Logger
 from modules.utils.random_generator import get_random_string
@@ -27,10 +28,7 @@ class CreateEvent(UseCase):
     @logging_decorator
     async def execute(self, event_data: EventCreationScheme):
         code = get_random_string(8)
-        code = "I_"+code 
-        if event_data.event_type == EventType.STIM:
-            code = "O_"+code
-
+        code = "O_"+code
         event = Event(event_type=event_data.event_type,
                       name = event_data.name,
                       description=event_data.description,
@@ -38,6 +36,7 @@ class CreateEvent(UseCase):
                       multiple=event_data.multiple)
         
         self.events_repo.save(event)
+        EventEngine().add_event(event_data.name)
 
 class ImportEvents(UseCase):
     @logging_decorator
@@ -76,8 +75,9 @@ class ImportEvents(UseCase):
                                  "error", str(e))
 
 class ExportEvents(UseCase):
-    async def execute(self):
-        pass
+    async def execute(self, filters, offset, count, sorting_key, sorting_desc):
+        result = EventEngine().export()
+        return result
 
 class EventActivate(UseCase):
     async def execute(self, subject_id, event_id):
@@ -102,6 +102,7 @@ class EventInput(UseCase):
             class_type = ProceedStoryPoint
         case = self.get_case(class_type)
         await case.execute(subject_id, event)
+        EventEngine().mark_event(subject.name, event.name)
     
 
 class ProceedStoryPoint(UseCase):

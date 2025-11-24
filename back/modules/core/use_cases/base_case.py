@@ -7,6 +7,7 @@ from modules.db.repos.mut_process_repo import MutProcessRepo
 from modules.db.repos.mutation_repo import MutationRepo
 from modules.db.repos.scilog_repo import SciLogRepo
 from modules.db.repos.statshistory_repo import StatsHistoryRepo
+from modules.db.repos.stim_repo import StimsRepo
 from modules.db.repos.subject_repo import SubjectRepo
 from modules.db.repos.task_repo import TaskRepo
 from modules.db.repos.user_repo import UserRepo
@@ -47,7 +48,8 @@ class UseCase(ABC):
     def __init__(self, subject_repo: SubjectRepo, task_repo: TaskRepo, 
                  scilog_repo: SciLogRepo, users_repo: UserRepo, assign_repo: AssignRepo,
                  stat_history_repo: StatsHistoryRepo, events_repo: EventsRepo,
-                 request_data: UserRequestInfo, mutation_repo:MutationRepo, mutprocess_repo: MutProcessRepo):
+                 request_data: UserRequestInfo, mutation_repo:MutationRepo, mutprocess_repo: MutProcessRepo,
+                 stims_repo: StimsRepo):
         self.subject_repo: SubjectRepo = subject_repo
         self.task_repo: TaskRepo = task_repo
         self.scilog_repo: SciLogRepo = scilog_repo
@@ -58,6 +60,7 @@ class UseCase(ABC):
         self.mutprocess_repo: MutProcessRepo = mutprocess_repo
         self.mutation_repo:MutationRepo = mutation_repo
         self.events_repo: EventsRepo = events_repo
+        self.stims_repo: StimsRepo = stims_repo
         
     def execute(self, *args, **kwargs):
         pass
@@ -73,7 +76,8 @@ class UseCase(ABC):
             "stat_history_repo": self.stat_history_repo,
             "mutprocess_repo": self.mutprocess_repo,
             "mutation_repo":self.mutation_repo,
-            "events_repo": self.events_repo
+            "events_repo": self.events_repo,
+            "stims_repo": self.stims_repo
         }
     
     def get_case(self, use_case_class):

@@ -555,6 +555,24 @@ export class FinFalResearchCenter {
         return data
     }
 
+     async get_events_tracking(not_before, not_after, user, action, result, offset, count, sorting_key) {
+        let url = config_loader.get_server_url()
+        let header = {
+            'Authorization': `Bearer ${this.token}`,
+        }
+
+        if (not_before != null) header['not-before'] = not_before
+        if (not_after != null) header['not-after'] = not_after
+        if (user != null) header['user'] = user
+        if (action != null) header['action'] = action
+        if (result != null) header['result'] = result
+        if (offset != null) header['offset'] = offset
+        if (count != null) header['count'] = count
+
+        let data = await http_request(url + `/events/export`, "GET", header, {})
+        return data
+    }
+
 
     async post_event(event_type, multiple, name, description){
         let url = config_loader.get_server_url()
@@ -596,6 +614,51 @@ export class FinFalResearchCenter {
         }
 
         let data = await http_request(url + `/events/import`, "POST", header, body)
+        return data
+    }
+
+    async get_stims(not_before, not_after, user, action, result, offset, count, sorting_key) {
+        let url = config_loader.get_server_url()
+        let header = {
+            'Authorization': `Bearer ${this.token}`,
+        }
+
+        if (not_before != null) header['not-before'] = not_before
+        if (not_after != null) header['not-after'] = not_after
+        if (user != null) header['user'] = user
+        if (action != null) header['action'] = action
+        if (result != null) header['result'] = result
+        if (offset != null) header['offset'] = offset
+        if (count != null) header['count'] = count
+
+        let data = await http_request(url + `/stims`, "GET", header, {})
+        return data
+    }
+
+    async post_stim(tissue_type, mako_volume){
+        let url = config_loader.get_server_url()
+        let header = {
+            'Authorization': `Bearer ${this.token}`,
+        }
+        let body = {
+            "tissue_type": tissue_type,
+            "mako_volume": mako_volume,
+        }
+
+        let data = await http_request(url + `/stims`, "POST", header, body)
+        return data
+    }
+
+    async import_stims_csv(csv_users) {
+        let url = config_loader.get_server_url()
+        let header = {
+            'Authorization': `Bearer ${this.token}`,
+        }
+        let body = {
+            "csv_data": csv_users,
+        }
+
+        let data = await http_request(url + `/stims/import`, "POST", header, body)
         return data
     }
 }

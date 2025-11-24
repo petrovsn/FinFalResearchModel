@@ -103,3 +103,12 @@ class Event(Base):
     name: Mapped[str] = mapped_column(String, unique=True)
     description: Mapped[str] = mapped_column(String)
     subjects: Mapped[str] = mapped_column(String)
+
+class Stim(Base):
+    code: Mapped[str] = mapped_column(String, unique=True)
+    tissue_type: Mapped[str] = mapped_column(String)
+    mako_volume: Mapped[int] = mapped_column(Integer)
+    used: Mapped[bool] = mapped_column(Boolean)
+    used_by: Mapped[str] = mapped_column(String, nullable=True)
+    tissue_save: Mapped[str] = mapped_column(String, nullable=True)
+    injected_at: Mapped[DateTime] = mapped_column(DateTime, nullable=True)

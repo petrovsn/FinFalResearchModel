@@ -13,6 +13,7 @@ import { EventsTable } from "../../widgets/events_table";
 import { ActionWrapper } from "../../widgets/abstract/action_wrapper";
 import { modal_controller } from "../../../static/controllers/modal_controller";
 import { events_table_controller } from "../../../static/controllers/events_controller";
+import { StimsTable } from "../../widgets/stims_table";
 
 export class MasterPage_Story extends React.Component {
     constructor() {
@@ -34,9 +35,11 @@ export class MasterPage_Story extends React.Component {
 
     render() {
         return <div className="MasterPage">
+            <h3>{locales.get("Subjects[StoryMode]")}</h3>
             {this.get_control_panel()}
             <CustomTableWidget table_controller = {subjects_story_controller}/>
             <EventsTable />
+            <StimsTable />
         </div>
     }
 }

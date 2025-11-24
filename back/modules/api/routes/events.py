@@ -6,7 +6,7 @@ from modules.assembler.assembler import get_InfrastuctureAssemblyParams
 from modules.core.entities import Subject, SubjectStatus, UserRole
 from modules.core.entities import UserRequestInfo
 from modules.core.use_cases.base_case import UseCaseFactory
-from modules.core.use_cases.event_case import CreateEvent, EventActivate, GetEvents, ImportEvents
+from modules.core.use_cases.event_case import CreateEvent, EventActivate, ExportEvents, GetEvents, ImportEvents
 
 events_router = APIRouter(prefix="/events")
 
@@ -21,6 +21,20 @@ async def get_events(
     infrastucture_params: dict = Depends(get_InfrastuctureAssemblyParams), 
     user_request_data:UserRequestInfo = Depends(AuthService().has_role(None))):
     case:GetEvents = UseCaseFactory.get(GetEvents, infrastucture_params, user_request_data)
+    result = case.execute(filters, offset, count, sorting_key, sorting_desc)
+    return await result
+
+@events_router.get("/export")
+async def get_events(
+    filters: Optional[str] = Header(None),
+    offset: Optional[int] = Header(None, gt=-1),
+    count: Optional[int] = Header(None, gt=-1),
+    sorting_key: Optional[str] = Header(None),
+    sorting_desc: Optional[bool] = Header(None),
+
+    infrastucture_params: dict = Depends(get_InfrastuctureAssemblyParams), 
+    user_request_data:UserRequestInfo = Depends(AuthService().has_role(None))):
+    case:ExportEvents = UseCaseFactory.get(ExportEvents, infrastucture_params, user_request_data)
     result = case.execute(filters, offset, count, sorting_key, sorting_desc)
     return await result
 

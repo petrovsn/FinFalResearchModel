@@ -1,6 +1,7 @@
 import base64
 import random
 
+from modules.core.use_cases.subject_case import CreateSubjectCase
 from modules.utils.logger import Logger
 from modules.api.schemas.schemas import CreateUserSchema
 from modules.bio_engine.mental_engine import MentalEngine
@@ -49,8 +50,8 @@ class CreateUserCase(UseCase):
         
         subject_id = None
         if user_data.role != UserRole.MASTER:
-            subject_obj = Subject(name = user_data.name)
-            subject_id = self.subject_repo.save(subject_obj)
+            create_subject:CreateSubjectCase = self.get_case(CreateSubjectCase)
+            subject_id = await create_subject.execute(user_data.name)
 
         user_obj = User(
             login = user_data.login,
@@ -59,6 +60,8 @@ class CreateUserCase(UseCase):
             role = user_data.role,
             subject_id=subject_id
         )
+
+
 
         user_id  = self.users_repo.save(user_obj)
 

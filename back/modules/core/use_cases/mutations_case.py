@@ -1,5 +1,6 @@
 from copy import deepcopy
 from  datetime import datetime
+from modules.event_engine.event_engine import EventEngine
 from modules.utils.logger import Logger
 import random
 import base64
@@ -88,6 +89,15 @@ class SupressMutProcess(UseCase):
         case = self.get_case(SetSubjectStatusCase)
         await case.execute(mutation.subject_id, SubjectStatus.ON_REST)
 
+class GetPotentialMutations(UseCase):
+    async def execute(self, subject_name):
+        mutations:List[Mutation] = self.mutation_repo.get()
+        result = {}
+        for mutation in mutations:
+            mutation_rate = EventEngine().get_rate(subject_name, mutation.conditions)
+            if mutation_rate!=0:
+                result[mutation.name] = (mutation_rate, len(mutation.conditions))
+        return result
     
 class CompleteMutProcess(UseCase):
     @logging_decorator
