@@ -20,18 +20,12 @@ export class MasterPage_Story extends React.Component {
         super()
     }
 
-    activate_event = () =>{
-        modal_controller.show(<EventActivator 
-            event = {events_table_controller.get_selected_item()}
-            subject = {subjects_story_controller.get_selected_item()}
-            />)
+    get_control_panel = () => {
+        let result = []
+        result.push(<button onClick={subjects_story_controller.update_content}>{locales.get("update")}</button>)
+        return <div className="ActionPanel">{result}</div>
     }
 
-    get_control_panel = () =>{
-        return <div>
-            <button onClick={this.activate_event}>{locales.get("activate_event")}</button>
-        </div>
-    }
 
     render() {
         return <div className="MasterPage">
@@ -44,18 +38,3 @@ export class MasterPage_Story extends React.Component {
     }
 }
 
-class EventActivator extends ActionWrapper{
-    on_activate_event = () =>{
-        finfal_rc.put_activate_event(this.props.event.id, this.props.subject.id)
-        .then(this.hide)
-        .catch(data=>{this.onError(data)})
-    }
-
-    render(){
-        return <div>
-
-            <label>{locales.get("event_activator_question")}</label>
-            {this.get_default_btn_panel("activate_event", this.on_activate_event)}
-        </div>
-    }
-}

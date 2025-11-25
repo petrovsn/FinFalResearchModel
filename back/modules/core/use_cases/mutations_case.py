@@ -1,5 +1,7 @@
 from copy import deepcopy
 from  datetime import datetime
+
+from matplotlib.style import available
 from modules.event_engine.event_engine import EventEngine
 from modules.utils.logger import Logger
 import random
@@ -28,6 +30,8 @@ class GenerateMutProcess(UseCase):
     @logging_decorator
     async def execute(self, subject_obj: Subject, start_cell_stability, finish_cell_stability):
         
+        available_mutations = await self.get_case(GetAvailableMutationsForSubject).execute(subject_obj.id)
+
         mutation_obj = MutationProcess(
             subject_id=subject_obj.id,
             subject_name=subject_obj.name,
@@ -35,13 +39,35 @@ class GenerateMutProcess(UseCase):
             finish_cell_stability = finish_cell_stability,
             mutation_class=MutationClass.MAJOR,
             complexity=3,
-            name = f"{start_cell_stability}->{finish_cell_stability}",
+            name = str(available_mutations),
             confirmation_code=get_random_string(8)
         )
 
         self.mutprocess_repo.save(mutation_obj)
         update_status_case = self.get_case(SetSubjectStatusCase)
         await update_status_case.execute(subject_obj.id, SubjectStatus.MUTATION)
+
+class GetAvailableMutationsForSubject(UseCase):
+    async def execute(self, subject_id):
+        subject:Subject = self.subject_repo.get_by_id(subject_id)
+        if not subject: return None
+        
+        mutation_list: List[Mutation] = self.mutation_repo.get()
+        result = []
+        for mutation in mutation_list:
+            mut_rate = EventEngine().get_rate(subject.name, mutation.conditions)
+            if mut_rate>0:
+                result.append((mutation.name, mut_rate))
+        
+        return sorted(result, key=lambda x: x[1], reverse=True)
+
+
+class SetMutationResult2Process(UseCase):
+    @logging_decorator
+    async def execute(self, mut_process_id: int, mutation_name: str):
+        mutation_process: MutationProcess = self.mutprocess_repo.get_by_id(mut_process_id)
+        mutation_process.name = mutation_name
+        self.mutprocess_repo.update(mutation_process.id, mutation_process)
 
 class RunMutProcessSupressing(UseCase):
     @logging_decorator

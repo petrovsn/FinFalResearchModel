@@ -9,6 +9,8 @@ import { CustomTable, CustomTablePagingButtons, CustomTableWidget } from "./tabl
 import { locales } from "../../static/locales";
 import { events_table_controller } from "../../static/controllers/events_controller";
 import { CsvImporter } from "./abstract/csv_importer";
+import { subjects_story_controller } from "../../static/controllers/subjects_story_controller";
+import { ActionWrapper } from "./abstract/action_wrapper";
 
 export class EventsTable extends React.Component {
     constructor() {
@@ -17,6 +19,13 @@ export class EventsTable extends React.Component {
 
     componentDidMount() {
         events_table_controller.update_content()
+    }
+
+    activate_event = () =>{
+        modal_controller.show(<EventActivator 
+            event = {events_table_controller.get_selected_item()}
+            subject = {subjects_story_controller.get_selected_item()}
+            />)
     }
 
     on_create_event = () =>{
@@ -32,6 +41,7 @@ export class EventsTable extends React.Component {
         result.push(<button onClick={events_table_controller.update_content}>{locales.get("update")}</button>)
         result.push(<button onClick={this.on_create_event}>{locales.get("create")}</button>)
         result.push(<button onClick={this.on_import_events}>{locales.get("import")}</button>)
+        result.push(<button onClick={this.activate_event}>{locales.get("activate_event")}</button>)
         return <div className="ActionPanel">{result}</div>
     }
 
@@ -111,3 +121,20 @@ class EventsCsvImporter extends CsvImporter {
                 })
         }
     }
+
+
+class EventActivator extends ActionWrapper{
+    on_activate_event = () =>{
+        finfal_rc.put_activate_event(this.props.event.id, this.props.subject.id)
+        .then(this.hide)
+        .catch(data=>{this.onError(data)})
+    }
+
+    render(){
+        return <div>
+
+            <label>{locales.get("event_activator_question")}</label>
+            {this.get_default_btn_panel("activate_event", this.on_activate_event)}
+        </div>
+    }
+}

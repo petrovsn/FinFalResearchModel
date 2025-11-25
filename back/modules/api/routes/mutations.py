@@ -26,6 +26,7 @@ async def get_mutations(
     return await result
 
 
+
 @mutations_router.post("")
 async def post_mutation(
     mut_data: MutationCreationScheme,

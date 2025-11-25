@@ -595,7 +595,7 @@ class MutationProceederViewer extends ActionWrapper {
     }
 
     componentDidMount() {
-        finfal_rc.get_actual_mutation(this.props.item.id).then(
+        finfal_rc.get_actual_mutation_process(this.props.item.id).then(
             data => {
 
                 finfal_rc.run_mutation_supression(data["id"])
@@ -611,7 +611,7 @@ class MutationProceederViewer extends ActionWrapper {
     }
 
     update_timer = () => {
-        finfal_rc.get_mutation_remaining_seconds(this.state.id)
+        finfal_rc.get_mutation_process_remaining_seconds(this.state.id)
             .then(seconds_remain => { this.setState({ "seconds_remain": seconds_remain }) })
             .catch()
     }

@@ -340,6 +340,7 @@ class Stim(BaseModel):
     tissue_type: TissueType
     mako_volume: int
     used: bool = False
+    used_by: str|None = None
     tissue_save: Tissue|None = None
     injected_at: datetime|None = None
 

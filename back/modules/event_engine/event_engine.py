@@ -12,7 +12,7 @@ class EventEngine(metaclass=SingletonMeta):
         """Загружает данные из файла или создает пустой DataFrame"""
         if os.path.exists(self._data_file):
             df = pd.read_csv(self._data_file, index_col=0)
-            df = df.fillna(0).astype(int)
+            #df = df.fillna(0).astype(int)
             return df
         df = pd.DataFrame()
         df["events"] = []
@@ -48,13 +48,6 @@ class EventEngine(metaclass=SingletonMeta):
         return self.df.loc[event_name, user_name]
     
     def export(self):
-        """
-        Возвращает список словарей, каждый из которых эквивалентен строке DataFrame
-        
-        Returns:
-            list: Список словарей, где каждый словарь представляет строку данных
-                  с ключами: 'event' (имя события) и именами пользователей как ключами
-        """
         # Сбрасываем индекс, чтобы имя события стало колонкой
         df_reset = self.df.reset_index()
         df_reset = df_reset.rename(columns={'index': 'event'})
@@ -65,6 +58,8 @@ class EventEngine(metaclass=SingletonMeta):
     #нужно для оценки готовности мутаций
     def get_rate(self, user_name, events_list):
         count = 0
+        if events_list==0: return 0
         for event_name in events_list:
-            count+=self.get_event_count(user_name,event_name)
-        return count
+            if event_name in self.df.index:
+                count+=self.get_event_count(user_name,event_name)
+        return count*1.0/len(events_list)
