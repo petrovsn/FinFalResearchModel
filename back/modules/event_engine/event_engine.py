@@ -58,7 +58,7 @@ class EventEngine(metaclass=SingletonMeta):
     #нужно для оценки готовности мутаций
     def get_rate(self, user_name, events_list):
         count = 0
-        if events_list==0: return 0
+        if len(events_list)==0: return 1
         for event_name in events_list:
             if event_name in self.df.index:
                 count+=self.get_event_count(user_name,event_name)

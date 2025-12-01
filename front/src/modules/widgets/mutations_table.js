@@ -4,7 +4,7 @@ import '../../styles/master_page.css'
 import { SubjectsWidget } from "./subjects_widget";
 import { subjects_controller } from "../../static/controllers/subjects_controller";
 import { tasks_table_controller } from "../../static/controllers/tasks_controller";
-import { InputString } from "./inputs";
+import { InputSelector, InputString } from "./inputs";
 import { CustomTable, CustomTablePagingButtons, CustomTableWidget } from "./table";
 import { locales } from "../../static/locales";
 import { mut_process_controller } from "../../static/controllers/mut_process_controller";
@@ -31,6 +31,7 @@ export class MutProcessesTable extends React.Component {
 
     render() {
         return <div className="TasksPage">
+            <h4>{locales.get("MutProcessesTable")}</h4>
             {this.get_button_panel()}
             <CustomTableWidget
                 table_controller={mut_process_controller}
@@ -56,17 +57,23 @@ export class MutationsTable extends React.Component{
         modal_controller.show(<MutationsCsvImporter/>)
     }
 
+    on_delete = () => {
+        modal_controller.show(<MutationDeleter item = {mutations_controller.get_selected_item()}/>)
+    }
+
 
     get_button_panel = () => {
         let result = []
         result.push(<button onClick={mutations_controller.update_content}>{locales.get("update")}</button>)
         result.push(<button onClick={this.on_create}>{locales.get("create")}</button>)
+        result.push(<button onClick={this.on_delete}>{locales.get("delete")}</button>)
         result.push(<button onClick={this.on_import}>{locales.get("import")}</button>)
         return <div className="ActionPanel">{result}</div>
     }
 
     render() {
         return <div className="TasksPage">
+            <h4>{locales.get("MutationsTable")}</h4>
             {this.get_button_panel()}
             <CustomTableWidget
                 table_controller={mutations_controller}
@@ -75,6 +82,25 @@ export class MutationsTable extends React.Component{
     }
 }
 
+class MutationDeleter extends ActionWrapper{
+    get_body = () =>{
+        return <div>
+            <label>{locales.get("delete_mut_question")}</label>
+        </div>
+    }
+
+    on_delete = () =>{
+        mutations_controller.delete(this.props.item.id)
+        modal_controller.hide()
+    }
+
+    render(){
+       return <div>
+            {this.get_body()}
+            {this.get_default_btn_panel("delete", this.on_delete)}
+        </div>
+    }
+}
 
 class MutationCreator extends ActionWrapper{
     constructor(){
@@ -82,12 +108,14 @@ class MutationCreator extends ActionWrapper{
         this.state = {
             name:"",
             description:"",
+            mutation_class: "minor",
             conditions:""
         }
     }
 
     on_create = () =>{
         finfal_rc.post_mutation(this.state.name,
+            this.state.mutation_class,
             this.state.description,
             this.state.conditions)
         .then(modal_controller.hide)
@@ -100,6 +128,11 @@ class MutationCreator extends ActionWrapper{
             label = "name"
             value = {this.state.name}
             onChange = {v=>{this.setState({"name":v})}}/>
+            <InputSelector 
+            label = "mutation_class"
+            options ={["minor", "major", "fatal"]}
+            value = {this.state.mutation_class}
+            onChange = {v=>{this.setState({"mutation_class":v})}}/>
             <InputString 
             label = "description"
             value = {this.state.description}

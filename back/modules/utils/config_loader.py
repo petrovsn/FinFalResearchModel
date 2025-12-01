@@ -4,6 +4,7 @@ import psutil
 import getpass
 import os
 import argparse
+import json
 
 def print_config(config_read):
     for section in config_read.sections():
@@ -40,7 +41,11 @@ class ConfigLoader:
 
 
     def update(self, config_dict):
-        pass
+        for key in config_dict:
+            self.config[key] = config_dict[key]
+
+        with open(self.filename, 'w', encoding='utf-8') as configfile:
+            self.config.write(configfile)
 
     def get_app_port(self):
         return int(self.config["app"]["port"])

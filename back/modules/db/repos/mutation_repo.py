@@ -15,7 +15,9 @@ class MutationRepo(BaseRepository):
     def get_dto_from_model(self, model_obj):
         if model_obj == None: return None
         model_dict = model_obj.to_dict()
-        model_dict["conditions"] = model_dict["conditions"].split(',')
+        conditions = model_dict["conditions"].split(',')
+        conditions_out = [a for a in conditions if a!=""]
+        model_dict["conditions"] = conditions_out
         return self.model_core(**model_dict)
     
     def get_model_dict_from_dto(self, model_dto:BaseModel):

@@ -30,6 +30,7 @@ export class TasksTable extends React.Component {
 
     render() {
         return <div className="TasksPage">
+            <h4>{locales.get("TaskTables")}</h4>
             {this.get_button_panel()}
             <CustomTableWidget
                 table_controller={tasks_table_controller}

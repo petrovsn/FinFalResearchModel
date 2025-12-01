@@ -6,7 +6,7 @@ from modules.api.security.token_handler import AuthService
 from modules.assembler.assembler import get_InfrastuctureAssemblyParams
 from modules.core.entities import UserRequestInfo, UserRole
 from modules.core.use_cases.base_case import UseCaseFactory
-from modules.core.use_cases.mutations_case import CreateMutation, GetAllMutations, ImportMutations
+from modules.core.use_cases.mutations_case import CreateMutation, DeleteMutation, GetAllMutations, ImportMutations
 
 mutations_router = APIRouter(prefix="/mutations")
 
@@ -47,3 +47,13 @@ async def import_mutations(
     result = case.execute(mutationsimportdata.csv_data)
     return await result
 
+
+
+@mutations_router.delete("/{obj_id}")
+async def delete_mutation(
+    obj_id: int,
+    infrastucture_params: dict = Depends(get_InfrastuctureAssemblyParams), 
+    user_request_data:UserRequestInfo = Depends(AuthService().has_role([UserRole.MASTER]))):
+    case:DeleteMutation = UseCaseFactory.get(DeleteMutation, infrastucture_params, user_request_data)
+    result = case.execute(obj_id)
+    return await result

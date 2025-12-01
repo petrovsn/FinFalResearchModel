@@ -83,9 +83,10 @@ export class SubjectsTable extends React.Component {
                 buttons_block.push(<button onClick={this.on_change_status}>{locales.get("set_subject_status")}</button>)
                 buttons_block.push(<button onClick={this.on_inject_drugs}>{locales.get("inject_drugs")}</button>)
                 buttons_block.push(<button onClick={this.on_inject_mako}>{locales.get("inject_mako")}</button>)
+                buttons_block.push(<button onClick={this.on_complete_task}>{locales.get("complete_task")}</button>)
                 buttons_block.push(<button onClick={this.on_inject_jenova}>{locales.get("inject_jenova")}</button>)
                 buttons_block.push(<button onClick={this.on_get_stat_history}>{locales.get("get_stats_history")}</button>)
-
+                buttons_block.push(<button onClick={this.on_change_assignment}>{locales.get("assign_doctor")}</button>)
             }
 
         }
@@ -96,6 +97,7 @@ export class SubjectsTable extends React.Component {
 
     render() {
         return <div className="UsersTable">
+            {this.props.mode == "master" ? <h4>{locales.get("SubjectTable")}</h4> : null}
             {this.get_actions_button()}
             <CustomTableWidget table_controller={subjects_controller}></CustomTableWidget>
         </div>
@@ -616,13 +618,13 @@ class MutationProceederViewer extends ActionWrapper {
             .catch()
     }
 
-    on_supress_mutation = () =>{
-        finfal_rc.supress_mutation(this.state.id,this.state.supression_points, this.state.confirmation_code)
-        .then(data=>{modal_controller.hide()})
-        .catch(data=>{
-            console.log("on_supress_mutation", data)
-            this.onError(data.content)
-        })
+    on_supress_mutation = () => {
+        finfal_rc.supress_mutation(this.state.id, this.state.supression_points, this.state.confirmation_code)
+            .then(data => { modal_controller.hide() })
+            .catch(data => {
+                console.log("on_supress_mutation", data)
+                this.onError(data.content)
+            })
     }
 
     get_body = () => {
@@ -630,10 +632,10 @@ class MutationProceederViewer extends ActionWrapper {
             <InputString disabled={true} value={this.state.mutation_class} label={locales.get("mutation_class")} />
             <InputString disabled={true} value={this.state.complexity} label={locales.get("mutation_complexity")} />
             <InputString disabled={true} value={this.state.seconds_remain} label={locales.get("seconds_remain")} />
-            <InputInt 
+            <InputInt
                 onChange={v => { this.setState({ "supression_points": v }) }}
                 value={this.state.supression_points} label={locales.get("supression_points")} />
-            <InputString 
+            <InputString
                 onChange={v => { this.setState({ "confirmation_code": v }) }}
                 value={this.state.confirmation_code} label={locales.get("confirmation_code")} />
         </div>

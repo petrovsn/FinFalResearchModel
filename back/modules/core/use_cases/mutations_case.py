@@ -1,8 +1,10 @@
 from copy import deepcopy
 from  datetime import datetime
 
+from matplotlib.pylab import rand
 from matplotlib.style import available
 from modules.event_engine.event_engine import EventEngine
+from modules.utils.config_loader import ConfigLoader
 from modules.utils.logger import Logger
 import random
 import base64
@@ -27,20 +29,82 @@ class GetCurrentMutProcess(UseCase):
         return result
 
 class GenerateMutProcess(UseCase):
+
+    def get_mutation_class(self, start_cell_stability, finish_cell_stability):
+        mutation_tresholds = ConfigLoader().get_mutation_tresholds()
+        light_points = 0
+        hard_points = 0
+        if start_cell_stability >= mutation_tresholds[0] > finish_cell_stability:
+            light_points+=1
+        if start_cell_stability >= mutation_tresholds[1] > finish_cell_stability:
+            light_points+=1
+        if start_cell_stability >= mutation_tresholds[2] > finish_cell_stability:
+            hard_points+=1
+
+        if hard_points == 0 and light_points == 0:
+            return None
+
+        if hard_points == 0:
+            if light_points == 1:
+                return MutationClass.MINOR
+            
+            if light_points == 2:
+                return MutationClass.MAJOR
+        else:
+            if light_points == 0:
+                return MutationClass.MAJOR
+            else:
+                return MutationClass.FATAL
+        
+        
+    def get_complexity(self, mut_class: MutationClass):
+        match mut_class:
+            case MutationClass.MINOR: return 1
+            case MutationClass.MAJOR: return 3
+            case MutationClass.FATAL: return 5
+        return -1
+    
+    def select_mutation(self, subject_obj: Subject, available_mutations):
+        for mutation in available_mutations:
+            max_rate = mutation[1]
+            filtered_muts = [a[0] for a in available_mutations if a[1]==max_rate and a[0] not in subject_obj.mutations]
+            if filtered_muts != []:
+                selected_mut = random.choice(filtered_muts)
+                return selected_mut
+        return "ALARM!!"
+
+        
+    def generate_confirmation_code(self, complexity):
+        code = ""
+        for i in range(complexity):
+            code = get_random_string(4)+","
+        return code[:-1]
+
+
     @logging_decorator
     async def execute(self, subject_obj: Subject, start_cell_stability, finish_cell_stability):
         
-        available_mutations = await self.get_case(GetAvailableMutationsForSubject).execute(subject_obj.id)
 
+        mutation_class = self.get_mutation_class(start_cell_stability, finish_cell_stability)
+        if mutation_class == None:
+            return
+        complexity = self.get_complexity(mutation_class)
+
+
+        available_mutations = await self.get_case(GetAvailableMutationsForSubject).execute(subject_obj.id, mutation_class)
+
+        selected_mutation = self.select_mutation(subject_obj,available_mutations)
+
+    
         mutation_obj = MutationProcess(
             subject_id=subject_obj.id,
             subject_name=subject_obj.name,
             start_cell_stability = start_cell_stability,
             finish_cell_stability = finish_cell_stability,
-            mutation_class=MutationClass.MAJOR,
-            complexity=3,
-            name = str(available_mutations),
-            confirmation_code=get_random_string(8)
+            mutation_class=mutation_class,
+            complexity=complexity,
+            name = selected_mutation,
+            confirmation_code=self.generate_confirmation_code(complexity)
         )
 
         self.mutprocess_repo.save(mutation_obj)
@@ -48,11 +112,11 @@ class GenerateMutProcess(UseCase):
         await update_status_case.execute(subject_obj.id, SubjectStatus.MUTATION)
 
 class GetAvailableMutationsForSubject(UseCase):
-    async def execute(self, subject_id):
+    async def execute(self, subject_id, mutation_class: MutationClass):
         subject:Subject = self.subject_repo.get_by_id(subject_id)
         if not subject: return None
         
-        mutation_list: List[Mutation] = self.mutation_repo.get()
+        mutation_list: List[Mutation] = self.mutation_repo.get(filters={"mutation_class":mutation_class})
         result = []
         for mutation in mutation_list:
             mut_rate = EventEngine().get_rate(subject.name, mutation.conditions)
@@ -131,6 +195,10 @@ class CompleteMutProcess(UseCase):
         mutation:MutationProcess = self.mutprocess_repo.get_by_id(mutation_id)
         mutation.status = MutProcessStatus.COMPLETED
         self.mutprocess_repo.update(mutation_id,mutation)
+        subject_id = mutation.subject_id
+        subject_obj: Subject = self.subject_repo.get_by_id(subject_id)
+        subject_obj.add_mutation(mutation.name)
+        self.subject_repo.update(subject_id, subject_obj)
         case = self.get_case(SetSubjectStatusCase)
         await case.execute(mutation.subject_id, SubjectStatus.ON_REST)
 
@@ -145,10 +213,16 @@ class CreateMutation(UseCase):
     async def execute(self, data:MutationCreationScheme):
         mutation_obj = Mutation(
                 name = data.name,
+                mutation_class = data.mutation_class,
                 description = data.description, 
                 conditions = data.conditions
         )
         self.mutation_repo.save(mutation_obj)
+
+class DeleteMutation(UseCase):
+    @logging_decorator
+    async def execute(self,  mut_id):
+        self.mutation_repo.delete(mut_id)
 
 class ImportMutations(UseCase):
     @logging_decorator
@@ -165,10 +239,12 @@ class ImportMutations(UseCase):
                 if row == "": continue
                 row_splitted = row.strip().split(';')
                 name = row_splitted[0]
-                description = row_splitted[1]
-                conditions = row_splitted[2:]
+                mutation_class = row_splitted[1]
+                description = row_splitted[2]
+                conditions = row_splitted[3:]
                 parsed_data.append(MutationCreationScheme(
                     name = name,
+                    mutation_class=mutation_class,
                     description = description,
                     conditions = conditions,
                 ))

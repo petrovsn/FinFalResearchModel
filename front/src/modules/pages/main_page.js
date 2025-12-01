@@ -9,7 +9,7 @@ import {auth_controller} from '../../static/controllers/auth_controller'
 import { MasterPage_Admin } from "./master/master_admin";
 import { DoctorPage } from "./doctor/doctor_page";
 import { MasterPage_Evo } from "./master/master_evo";
-import { MasterPage_Bio } from "./master/master_bio";
+import { MasterPage_Mutations } from "./master/master_bio";
 import { MasterPage_System } from "./master/master_system";
 import { MasterPage_Story } from "./master/master_story";
 class Navigation extends React.Component{
@@ -56,8 +56,8 @@ class ContentZone extends React.Component {
                 return <MasterPage_Evo/>
             }
 
-            case 'master_engine':{
-                return <MasterPage_Bio/>
+            case 'master_mutations':{
+                return <MasterPage_Mutations/>
             }
 
             case 'master_system':{

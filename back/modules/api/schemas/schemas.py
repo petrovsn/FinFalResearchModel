@@ -4,7 +4,7 @@ from pydantic import BaseModel
 from typing import Annotated, List, Dict
 from enum import Enum
 
-from modules.core.entities import EventType, MakoInjection, TissueType, UserRole
+from modules.core.entities import EventType, MakoInjection, MutationClass, TissueType, UserRole
 
 class InitiateServerSchema(BaseModel):
     login: str
@@ -72,6 +72,7 @@ class EventActivationScheme(BaseModel):
 class MutationCreationScheme(BaseModel):
     name: str
     description: str
+    mutation_class: MutationClass
     conditions: List[str]
 
 

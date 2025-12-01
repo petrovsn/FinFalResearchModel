@@ -2,6 +2,7 @@ import { store } from "../storage/storage"
 import { createTableSlice } from "../storage/slices/tableSlice";
 import { finfal_rc } from "../backend_api";
 import { auth_controller } from "./auth_controller";
+import { BaseBackendEntityController } from "../backend_api/base_controller";
 
 export class CommonTableController {
     constructor(tableName) {
@@ -26,10 +27,10 @@ export class CommonTableController {
             'desc': true
         }
 
-
-
         this.current_page = 0
         this.page_rowcount = 10
+
+        this.backend_controller = new BaseBackendEntityController(tableName)
     }
 
     //=========Filters===================================================
@@ -45,8 +46,6 @@ export class CommonTableController {
         this.update_content()
     }
 
-    
-
     set_sorting_key = (key_value) => {
         if (this.sorting['key'] == key_value) {
             this.sorting['desc'] = !this.sorting['desc']
@@ -54,7 +53,7 @@ export class CommonTableController {
         else {
             this.sorting['key'] = key_value
         }
-        
+
         this.update_content()
     }
 
@@ -76,6 +75,26 @@ export class CommonTableController {
         }
     }
 
+    update_content = () => {
+
+        this.backend_controller.get(
+            this.filters["offset"],
+            this.filters["count"],
+            this.sorting
+        ).then((data) => {
+            store.dispatch(this.actions.set_content(data))
+            this.update_selected_item()
+        })
+    }
+
+    delete = (obj_id) => {
+        this.backend_controller.delete(obj_id)
+            .then(data => {
+                this.update_content()
+            }
+            )
+    }
+
     get_filters() {
         return JSON.parse(JSON.stringify(this.filters))
     }
@@ -90,9 +109,6 @@ export class CommonTableController {
             }
         )
     }
-
-    update_content() { }
-
 
     //=========Paging====================================================
     set_row_count = (value) => {
@@ -133,14 +149,13 @@ export class CommonTableController {
     }
 
     get_selected_item = () => {
-        
+
         if (this.content_data.selected_item)
-            if ("id" in this.content_data.selected_item)
-            {
-                console.log("get_selected_item",this.content_data.selected_item)
+            if ("id" in this.content_data.selected_item) {
+                console.log("get_selected_item", this.content_data.selected_item)
                 return this.content_data.selected_item
             }
-                
+
         return null
     }
 

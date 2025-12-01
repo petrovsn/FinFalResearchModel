@@ -6,10 +6,10 @@ const navigationSlice = createSlice({
     current_tab: "research",
     tabs_list: 
     {
-      "master":["master_admin", "master_evo", "master_engine", "master_system", "master_story", "senior_page", "doctor_page"],
-      "senior":["senior_page"],
-      "doctor":["doctor_page"],
-      "subject":[],
+      "master":["master_admin", "master_system", "master_evo", "master_mutations", "master_story", "senior_page", "doctor_page", "profile_page"],
+      "senior":["senior_page", "profile_page"],
+      "doctor":["doctor_page", "profile_page"],
+      "subject":["profile_page"],
     }
     
   },

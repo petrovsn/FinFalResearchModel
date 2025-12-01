@@ -169,6 +169,7 @@ class Mutation(BaseModel):
     id: int|None = None
     name: str
     description: str
+    mutation_class: MutationClass
     conditions: List[str]
 
 class TaskStatus(str, Enum):

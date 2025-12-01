@@ -1,0 +1,14 @@
+
+
+.ConfigWidget .body{
+    display: grid;
+    grid-template-columns: 50% 50%;
+}
+
+.ConfigWidget .section{
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+    border: 1px solid black;
+    padding: 10px;
+}

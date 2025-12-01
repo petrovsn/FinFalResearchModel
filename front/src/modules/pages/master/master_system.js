@@ -7,6 +7,7 @@ import '../../../styles/master_page.css'
 
 import { AppLogWidget } from "../../widgets/applog_widget";
 import { ServicesControlWidget } from "../../widgets/services_control_widget";
+import { ConfigWidget } from "../../widgets/config_widget";
 export class MasterPage_System extends React.Component {
     constructor() {
         super()
@@ -22,7 +23,11 @@ export class MasterPage_System extends React.Component {
 
     render() {
         return <div className="MasterPage">
-            <ServicesControlWidget/>
+            <div style={{"display":"flex"}}>
+                <ServicesControlWidget />
+                <ConfigWidget />
+            </div>
+
             <AppLogWidget />
         </div>
     }

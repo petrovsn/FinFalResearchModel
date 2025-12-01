@@ -92,6 +92,7 @@ class MutationProcess(Base):
 
 class Mutation(Base):
     name: Mapped[str] = mapped_column(String)
+    mutation_class: Mapped[str] = mapped_column(String)
     description: Mapped[str] = mapped_column(String)
     conditions: Mapped[str] = mapped_column(String)
 
@@ -112,3 +113,7 @@ class Stim(Base):
     used_by: Mapped[str] = mapped_column(String, nullable=True)
     tissue_save: Mapped[str] = mapped_column(String, nullable=True)
     injected_at: Mapped[DateTime] = mapped_column(DateTime, nullable=True)
+
+
+class EventTrackingTable(Base):
+    data: Mapped[str] = mapped_column(String)

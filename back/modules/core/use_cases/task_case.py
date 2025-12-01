@@ -109,10 +109,6 @@ class ProceedMakoInjection(UseCase):
         if old_cell_stability!= new_cell_stability:
             generate_mutation = self.get_case(GenerateMutProcess)
             await generate_mutation.execute(subject, old_cell_stability, new_cell_stability)
-        #mutations_counter = MakoEngine.get_mutations(old_cell_stability, new_cell_stability)
-        #case = GenerateMutation(**self.get_infrastructure_copy())
-        #await case.execute(subject_id,mutations_counter)
-
 
         
         log_record.save_final_stage(subject)

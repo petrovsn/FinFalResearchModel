@@ -1,21 +1,12 @@
-name;description;conditions;
-m1;m1;;
-m2;описание;;
-m3;m3;subject;
-m4;m4;;
-m5;m5;;
-m6;m6;;
-m7;M7;;
-m8;m8;cond1;cond2
-m9;m9;;
-m10;m10;;
-m11;описание2;;
-m12;m12;;
-m13;m13;;
-m14;m14;;
-IncreaseStrength1;IncreaseStrength1;IncreaseStrength1;
-IncreaseReaction1;IncreaseReaction1;IncreaseReaction1;
-IncreaseHealth1;IncreaseHealth1;IncreaseHealth1;
-DecreaseStrength1;DecreaseStrength1;DecreaseStrength1;
-DecreaseReaction1;DecreaseReaction1;DecreaseReaction1;
-DecreaseHealth1;DecreaseHealth1;DecreaseHealth1;
+name;mutation_class;description;conditions
+IncreaseStrength1;minor;IncreaseStrength1;IncreaseStrength1
+IncreaseReaction1;minor;IncreaseReaction1;IncreaseReaction1
+IncreaseHealth1;minor;IncreaseHealth1;IncreaseHealth1
+DecreaseStrength1;minor;DecreaseStrength1;
+DecreaseReaction1;minor;DecreaseReaction1;
+DecreaseHealth1;minor;DecreaseHealth1;
+HealingHands;major;You can heal allies 1 time at battle;HealingHands
+AcidBlast;major;Можешь плюнуть кислотой 1 раз за битву;AcidBlast
+FragileFeather;major;Все очки силы конвертируются в ловкость;
+WorldEater;fatal;Очки силы, ловкости и жизни удваиваются. Тебя терзает лютый голод, если каждые 15 минут ты не будешь поглощать биомассу, то умрешь;
+GlassBlast;fatal;"Очки силы, ловкости и жизни становятся равны 1. Ты получаешь способность ""призрачность"" - можешь в свой ход выйти из битвы. ";

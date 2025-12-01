@@ -12,7 +12,7 @@ class MutationsController extends CommonTableController {
     }
 
     get_keys = () => {
-        return ["id", "name", "description", "conditions"]
+        return ["id", "name", "mutation_class", "description", "conditions"]
     }
 
     on_select = (item) => {

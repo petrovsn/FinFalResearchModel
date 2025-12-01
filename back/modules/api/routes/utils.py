@@ -35,7 +35,7 @@ async def get_config(infrastucture_params: dict = Depends(get_InfrastuctureAssem
 
 
 @utils_router.post("/config")
-async def get_config(config: str = Body(), infrastucture_params: dict = Depends(get_InfrastuctureAssemblyParams),
+async def get_config(config: str = Body(), 
                      user_request_data=Depends(AuthService().has_role([]))):
     
     config = json.loads(config)

@@ -1,12 +1,1 @@
 ,events,s1,Топор,s3,s4,s5,Судак,s7,s8,Енот,s10,s11,s12,ss,d3
-e1_story,e1_story,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-e2_story,e2_story,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-e3_story,e3_story,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-s1_stim,s1_stim,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-s2_stim,s2_stim,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-IncreaseStrength1,IncreaseStrength1,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-IncreaseReaction1,IncreaseReaction1,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-IncreaseHealth1,IncreaseHealth1,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-DecreaseStrength1,DecreaseStrength1,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-DecreaseReaction1,DecreaseReaction1,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-DecreaseHealth1,DecreaseHealth1,0,0,0,0,0,0,0,0,0,0,0,1,0,0

@@ -507,13 +507,14 @@ export class FinFalResearchCenter {
         return data
     }
 
-    async post_mutation(name, description, conditions){
+    async post_mutation(name, mutation_class, description, conditions){
         let url = config_loader.get_server_url()
         let header = {
             'Authorization': `Bearer ${this.token}`,
         }
         let body = {
             "name": name,
+            "mutation_class": mutation_class,
             "description":description,
             "conditions":[]
         }
@@ -659,6 +660,28 @@ export class FinFalResearchCenter {
         }
 
         let data = await http_request(url + `/stims/import`, "POST", header, body)
+        return data
+    }
+
+    async get_config(){
+        let url = config_loader.get_server_url()
+        let header = {
+            'Authorization': `Bearer ${this.token}`,
+        }
+
+        let data = await http_request(url + `/utils/config`, "GET", header, {})
+        return data
+    }
+
+    async post_config(new_config){
+        let url = config_loader.get_server_url()
+        let header = {
+            'Authorization': `Bearer ${this.token}`,
+        }
+
+        let body = JSON.stringify(new_config)
+
+        let data = await http_request(url + `/utils/config`, "POST", header, body)
         return data
     }
 }
