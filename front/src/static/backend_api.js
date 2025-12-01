@@ -457,6 +457,17 @@ export class FinFalResearchCenter {
         return data
     }
 
+    async get_potential_mutations(subject_id) {
+        let url = config_loader.get_server_url()
+        let header = {
+            'Authorization': `Bearer ${this.token}`,
+        }
+        let body = {}
+
+        let data = await http_request(url + `/subjects/${subject_id}/actual_mutation_process`, "GET", header, body)
+        return data
+    }
+
     async get_mutation_process_remaining_seconds(mutation_id) {
         let url = config_loader.get_server_url()
         let header = {

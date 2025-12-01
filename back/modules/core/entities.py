@@ -105,6 +105,9 @@ class Subject(BaseModel):
     tissues: Tissues = Tissues()
     mutations: List[str] = []
 
+    next_mutation: str|None = None
+    stim_unprocessed_mako: float = 0
+
     def apply_cell_unstability(self, unstability):
         delta = int((100-self.jenova_cells)/100)
         unstability = unstability*delta

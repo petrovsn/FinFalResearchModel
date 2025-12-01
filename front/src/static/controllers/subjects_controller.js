@@ -12,7 +12,7 @@ class SubjectsController extends CommonTableController {
     }
 
     get_keys = () => {
-        return ["id", "name", "status", "doctor_name", "cell_stability", "mental_stability", "stats_health", "stats_reaction", "stats_strength", "jenova_cells", "mutations"] 
+        return ["id", "name", "status", "doctor_name", "cell_stability", "mental_stability", "stats_health", "stats_reaction", "stats_strength", "jenova_cells", "mutations", "next_mutation"] 
     }
 
 

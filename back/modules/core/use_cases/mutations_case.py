@@ -112,11 +112,15 @@ class GenerateMutProcess(UseCase):
         await update_status_case.execute(subject_obj.id, SubjectStatus.MUTATION)
 
 class GetAvailableMutationsForSubject(UseCase):
-    async def execute(self, subject_id, mutation_class: MutationClass):
+    async def execute(self, subject_id, mutation_class: MutationClass|None = None):
         subject:Subject = self.subject_repo.get_by_id(subject_id)
         if not subject: return None
         
-        mutation_list: List[Mutation] = self.mutation_repo.get(filters={"mutation_class":mutation_class})
+        filters = {}
+        if mutation_class!=None:
+            filters={"mutation_class":mutation_class}
+
+        mutation_list: List[Mutation] = self.mutation_repo.get(filters=filters)
         result = []
         for mutation in mutation_list:
             mut_rate = EventEngine().get_rate(subject.name, mutation.conditions)

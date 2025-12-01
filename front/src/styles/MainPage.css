@@ -57,3 +57,11 @@ button{
     flex-direction: column;
     gap: 20px;
 }
+
+
+.warning_label{
+    text-transform: uppercase;
+    color: red;
+    background-color: orange;
+    margin-bottom: 10px;
+}

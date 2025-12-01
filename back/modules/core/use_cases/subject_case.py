@@ -5,7 +5,7 @@ from psutil import users
 from sqlalchemy import false
 from modules.bio_engine.mako_engine import MakoEngine
 from modules.bio_engine.mutations.mutations_engine import MutationsEngine
-from modules.core.entities import Stats, StatsHistory, Subject, SubjectAssignment, SubjectOut, SubjectShortData, SubjectStatus, User, UserRole
+from modules.core.entities import Mutation, Stats, StatsHistory, Subject, SubjectAssignment, SubjectOut, SubjectShortData, SubjectStatus, User, UserRole
 from modules.core.exceptions import BaseCustomException, ObjectNonExists
 from modules.core.use_cases.base_case import UseCase, logging_decorator
 from modules.event_engine.event_engine import EventEngine
@@ -31,6 +31,14 @@ class GetFullSubjectInfoCase(UseCase):
 
         return subject_out
         
+
+class SetNextMutation(UseCase):
+    async def execute(self, subject_id, mutation_id):
+        mutation_obj:Mutation = self.mutation_repo.get_by_id(mutation_id)
+        subject_obj:Subject = self.subject_repo.get_by_id(subject_id)
+        subject_obj.next_mutation = mutation_obj.name
+        self.subject_repo.update(subject_id, subject_obj)
+
 
 class GetAllSubjectsCase(UseCase):
     async def execute(self):

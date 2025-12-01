@@ -247,10 +247,19 @@ export class MakoInjectionWidget extends ActionWrapper {
         return result
     }
 
+    get_warning_label = () =>{
+        if (this.state.blood+this.state.nerves+this.state.muscules >= this.props.item.cell_stability)
+        {
+            return <label className="warning_label">{locales.get("too_much_mako_warning")}</label>
+        }
+        return null
+    }
+
     render() {
         return <div className="MakoInjectionWidget">
             <SubjectViewer item={this.props.item} />
             {this.get_action()}
+            {this.get_warning_label()}
             {this.get_controls()}
         </div>
 
@@ -582,6 +591,24 @@ class MakoInjectionResult extends React.Component {
             {this.get_controls()}
         </div>
 
+    }
+}
+
+class NextMutatuinAssigner extends ActionWrapper{
+    constructor() {
+        super()
+    }
+
+    
+
+    get_available_mutations = () =>{
+        finfal_rc.get_available_mutations()
+    }
+
+    render(){
+        return <div>
+
+        </div>
     }
 }
 
