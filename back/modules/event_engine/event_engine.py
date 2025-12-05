@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+from modules.utils.config_loader import ConfigLoader
 from modules.utils.singleton_meta import SingletonMeta
 
 
@@ -58,7 +59,7 @@ class EventEngine(metaclass=SingletonMeta):
     #нужно для оценки готовности мутаций
     def get_rate(self, user_name, events_list):
         count = 0
-        if len(events_list)==0: return 1
+        if len(events_list)==0: return ConfigLoader().get_default_mutation_weight()
         for event_name in events_list:
             if event_name in self.df.index:
                 count+=self.get_event_count(user_name,event_name)

@@ -247,9 +247,8 @@ export class MakoInjectionWidget extends ActionWrapper {
         return result
     }
 
-    get_warning_label = () =>{
-        if (this.state.blood+this.state.nerves+this.state.muscules >= this.props.item.cell_stability)
-        {
+    get_warning_label = () => {
+        if (this.state.blood + this.state.nerves + this.state.muscules >= this.props.item.cell_stability) {
             return <label className="warning_label">{locales.get("too_much_mako_warning")}</label>
         }
         return null
@@ -441,7 +440,9 @@ class MasterSubjectViewer extends React.Component {
                     "current_mako_level": null
                 }
             },
-            "mutations": 0
+            "mutations": "",
+            "next_mutation": "",
+            "potential_mutations": []
         }
     }
 
@@ -459,11 +460,43 @@ class MasterSubjectViewer extends React.Component {
     }
 
     componentDidMount() {
-        finfal_rc.get_subject_info(this.props.item["id"]).then(data => { this.setState(data) }).catch()
+        this.get_subject_data()
+    }
+
+    get_subject_data = () => {
+        finfal_rc.get_subject_info(this.props.item["id"])
+            .then(data => { this.setState(data) })
+            .catch()
+        finfal_rc.get_potential_mutations(this.props.item["id"])
+            .then(data => this.setState({ "potential_mutations": data }))
+            .catch()
+    }
+
+    assign_next_mutation = (value) => {
+        finfal_rc.put_assign_next_mutation(this.state.id, value)
+            .then(
+                data => {
+                    this.get_subject_data()
+                }
+            ).catch()
+    }
+
+    get_potential_mutations = () => {
+        let result = []
+        for (let i in this.state.potential_mutations) {
+            let mut = this.state.potential_mutations[i]
+            result.push(<label>{locales.get(mut[0])}: {mut[1]}
+                <button
+                    onClick={e => this.assign_next_mutation(mut[0])}
+                >assign_next</button></label>)
+        }
+        return <div className="potential_mutations">
+            {result}
+        </div>
     }
 
     get_body = () => {
-        return <div>
+        return <div className="MasterSubjectViewer">
             <InputString disabled={true}
                 label={locales.get("subject_name")}
                 value={this.state["name"]} />
@@ -485,6 +518,11 @@ class MasterSubjectViewer extends React.Component {
             <InputString disabled={true}
                 label={locales.get("mutations")}
                 value={this.state["mutations"]} />
+            <InputString disabled={true}
+                label={locales.get("next_mutation")}
+                value={this.state["next_mutation"]} />
+
+            {this.get_potential_mutations()}
         </div>
     }
 
@@ -594,24 +632,6 @@ class MakoInjectionResult extends React.Component {
     }
 }
 
-class NextMutatuinAssigner extends ActionWrapper{
-    constructor() {
-        super()
-    }
-
-    
-
-    get_available_mutations = () =>{
-        finfal_rc.get_available_mutations()
-    }
-
-    render(){
-        return <div>
-
-        </div>
-    }
-}
-
 class MutationProceederViewer extends ActionWrapper {
     constructor() {
         super()
@@ -647,7 +667,11 @@ class MutationProceederViewer extends ActionWrapper {
 
     on_supress_mutation = () => {
         finfal_rc.supress_mutation(this.state.id, this.state.supression_points, this.state.confirmation_code)
-            .then(data => { modal_controller.hide() })
+            .then(data => {
+
+                modal_controller.show(<MutationProceederResult result={data} />)
+
+            })
             .catch(data => {
                 console.log("on_supress_mutation", data)
                 this.onError(data.content)
@@ -672,6 +696,31 @@ class MutationProceederViewer extends ActionWrapper {
         return <div>
             <button onClick={modal_controller.hide}>{locales.get("close")}</button>
             <button onClick={this.on_supress_mutation}>{locales.get("supress_mutation")}</button>
+        </div>
+    }
+
+    render() {
+        return <div>
+            {this.get_body()}
+            {this.get_controls()}
+        </div>
+    }
+}
+
+class MutationProceederResult extends ActionWrapper {
+    get_body = () => {
+        return <div>
+            <label>{locales.get(this.props.result.mutation)}</label>
+            {this.props.result.result ?
+                <label>{locales.get("supressed")}</label>
+                : <label>{locales.get("evolved")}</label>}
+
+        </div>
+    }
+
+    get_controls = () => {
+        return <div>
+            <button onClick={modal_controller.hide}>{locales.get("close")}</button>
         </div>
     }
 

@@ -39,6 +39,9 @@ class ConfigLoader:
     def init(self):
         pass
 
+    def get_app_version(self):
+        VERSION = "2.0"
+        return VERSION
 
     def update(self, config_dict):
         for key in config_dict:
@@ -86,3 +89,7 @@ class ConfigLoader:
     def get_mutation_supressing_time(self):
         muts_time =  int(self.config["engine"]["mutation_supressing_time"])
         return timedelta(seconds=muts_time)
+    
+    def get_default_mutation_weight(self):
+        data =  float(self.config["engine"]["default_mutation_weight"])
+        return data

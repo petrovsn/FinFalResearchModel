@@ -10,7 +10,7 @@ class ChangeStrength(BaseMutation):
         self.value = value
 
     def apply_effect(self, subject_obj: SubjectOut):
-        subject_obj.stats_strength = subject_obj.stats_strength+self.value
+        subject_obj.stats_strength = max(1, subject_obj.stats_strength+self.value)
         return subject_obj
     
 
@@ -20,7 +20,7 @@ class ChangeHealth(BaseMutation):
         self.value = value
 
     def apply_effect(self, subject_obj: SubjectOut):
-        subject_obj.stats_health = subject_obj.stats_health+self.value
+        subject_obj.stats_health = max(1, subject_obj.stats_health+self.value)
         return subject_obj
     
 class ChangeReaction(BaseMutation):
@@ -29,5 +29,5 @@ class ChangeReaction(BaseMutation):
         self.value = value
 
     def apply_effect(self, subject_obj: SubjectOut):
-        subject_obj.stats_reaction = subject_obj.stats_reaction+self.value
+        subject_obj.stats_reaction = max(1, subject_obj.stats_reaction+self.value)
         return subject_obj

@@ -79,3 +79,7 @@ class MutationCreationScheme(BaseModel):
 class StimCreationSchema(BaseModel):
     tissue_type: TissueType
     mako_volume: int
+
+
+class NextMutationAssignment(BaseModel):
+    mutation_name: str

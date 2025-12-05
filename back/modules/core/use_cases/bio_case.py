@@ -87,7 +87,7 @@ class InjectMakoToSubject(UseCase):
         # task_object.task_numbers = bio_engine.generate_task(subject.mental_stability, total_mako_energy)
         total_mana_energy = m_injection.get_summary_mako_level()
         num_mako_cost = ConfigLoader().get_num_mako_cost()
-        num_len = int(total_mana_energy/num_mako_cost)**2
+        num_len = int(total_mana_energy/num_mako_cost)
         num_len = num_len*subject.mental_stability/100
         num_len = max(int(num_len), 3)
         task_numbers = [random.randint(1, 99) for i in range(num_len)]

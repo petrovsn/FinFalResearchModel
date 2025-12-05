@@ -464,7 +464,20 @@ export class FinFalResearchCenter {
         }
         let body = {}
 
-        let data = await http_request(url + `/subjects/${subject_id}/actual_mutation_process`, "GET", header, body)
+        let data = await http_request(url + `/subjects/${subject_id}/available_mutations`, "GET", header, body)
+        return data
+    }
+
+    async put_assign_next_mutation(subject_id, mutation_name) {
+        let url = config_loader.get_server_url()
+        let header = {
+            'Authorization': `Bearer ${this.token}`,
+        }
+        let body = {
+            "mutation_name": mutation_name
+        }
+
+        let data = await http_request(url + `/subjects/${subject_id}/assign_next_mutation`, "PUT", header, body)
         return data
     }
 
@@ -478,6 +491,8 @@ export class FinFalResearchCenter {
         let data = await http_request(url + `/mut_process/${mutation_id}/seconds_remain`, "GET", header, body)
         return data
     }
+
+
 
     async run_mutation_supression(mutation_id) {
         let url = config_loader.get_server_url()
@@ -518,7 +533,7 @@ export class FinFalResearchCenter {
         return data
     }
 
-    async post_mutation(name, mutation_class, description, conditions){
+    async post_mutation(name, mutation_class, description, conditions) {
         let url = config_loader.get_server_url()
         let header = {
             'Authorization': `Bearer ${this.token}`,
@@ -526,8 +541,8 @@ export class FinFalResearchCenter {
         let body = {
             "name": name,
             "mutation_class": mutation_class,
-            "description":description,
-            "conditions":[]
+            "description": description,
+            "conditions": []
         }
 
         let data = await http_request(url + `/mutations`, "POST", header, body)
@@ -567,7 +582,7 @@ export class FinFalResearchCenter {
         return data
     }
 
-     async get_events_tracking(not_before, not_after, user, action, result, offset, count, sorting_key) {
+    async get_events_tracking(not_before, not_after, user, action, result, offset, count, sorting_key) {
         let url = config_loader.get_server_url()
         let header = {
             'Authorization': `Bearer ${this.token}`,
@@ -586,7 +601,7 @@ export class FinFalResearchCenter {
     }
 
 
-    async post_event(event_type, multiple, name, description){
+    async post_event(event_type, multiple, name, description) {
         let url = config_loader.get_server_url()
         let header = {
             'Authorization': `Bearer ${this.token}`,
@@ -602,7 +617,7 @@ export class FinFalResearchCenter {
         return data
     }
 
-    async put_activate_event(event_id, subject_id){
+    async put_activate_event(event_id, subject_id) {
         let url = config_loader.get_server_url()
         let header = {
             'Authorization': `Bearer ${this.token}`,
@@ -647,7 +662,7 @@ export class FinFalResearchCenter {
         return data
     }
 
-    async post_stim(tissue_type, mako_volume){
+    async post_stim(tissue_type, mako_volume) {
         let url = config_loader.get_server_url()
         let header = {
             'Authorization': `Bearer ${this.token}`,
@@ -674,7 +689,7 @@ export class FinFalResearchCenter {
         return data
     }
 
-    async get_config(){
+    async get_config() {
         let url = config_loader.get_server_url()
         let header = {
             'Authorization': `Bearer ${this.token}`,
@@ -684,7 +699,7 @@ export class FinFalResearchCenter {
         return data
     }
 
-    async post_config(new_config){
+    async post_config(new_config) {
         let url = config_loader.get_server_url()
         let header = {
             'Authorization': `Bearer ${this.token}`,

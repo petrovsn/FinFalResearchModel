@@ -1,13 +1,13 @@
 from fastapi import Body, Depends, APIRouter, Header
 from typing import Optional
 
-from modules.api.schemas.schemas import CreateSubjectSchema
+from modules.api.schemas.schemas import CreateSubjectSchema, NextMutationAssignment
 from modules.api.security.token_handler import AuthService
 from modules.assembler.assembler import get_InfrastuctureAssemblyParams
 from modules.core.entities import Subject, SubjectStatus, UserRole
 from modules.core.entities import UserRequestInfo
 from modules.core.use_cases.base_case import UseCase, logging_decorator,UseCaseFactory
-from modules.core.use_cases.mutations_case import GetAvailableMutationsForSubject, GetCurrentMutProcess
+from modules.core.use_cases.mutations_case import AssignNextMutation, GetAvailableMutationsForSubject, GetCurrentMutProcess
 from modules.core.use_cases.subject_case import CreateSubjectCase, GetAllSubjectsCase, GetAvailableSubject, GetSubjectInfoCase, GetSubjectStatsHistory, SetSubjectStatusCase, UpdateSubjectCase
 from modules.core.use_cases.task_case import GetActualTask
 
@@ -72,6 +72,12 @@ async def get_actual_task(subject_id: int, infrastucture_params: dict = Depends(
 async def get_actual_task(subject_id: int, infrastucture_params: dict = Depends(get_InfrastuctureAssemblyParams),user_request_data:UserRequestInfo = Depends(AuthService().has_role([UserRole.MASTER, UserRole.DOCTOR]))):
     case: GetCurrentMutProcess = UseCaseFactory.get(GetCurrentMutProcess, infrastucture_params, user_request_data)
     result =  await case.execute(subject_id)
+    return result
+
+@subject_router.put("/{subject_id}/assign_next_mutation")
+async def assign_next_mutation(subject_id: int, mutation_data: NextMutationAssignment, infrastucture_params: dict = Depends(get_InfrastuctureAssemblyParams),user_request_data:UserRequestInfo = Depends(AuthService().has_role([UserRole.MASTER, UserRole.DOCTOR]))):
+    case: AssignNextMutation = UseCaseFactory.get(AssignNextMutation, infrastucture_params, user_request_data)
+    result =  await case.execute(subject_id, mutation_data.mutation_name)
     return result
 
 

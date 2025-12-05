@@ -16,3 +16,13 @@
     border: 1px solid black;
     padding: 5px;
 }
+
+.potential_mutations{
+    display:  flex;
+    flex-direction: column;
+    align-items: end;
+}
+
+button:active{
+    border: 2px solid black;
+}

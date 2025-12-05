@@ -1,5 +1,6 @@
 from copy import deepcopy
 from  datetime import datetime
+from unittest.mock import Base
 
 from matplotlib.pylab import rand
 from matplotlib.style import available
@@ -90,10 +91,11 @@ class GenerateMutProcess(UseCase):
             return
         complexity = self.get_complexity(mutation_class)
 
-
-        available_mutations = await self.get_case(GetAvailableMutationsForSubject).execute(subject_obj.id, mutation_class)
-
-        selected_mutation = self.select_mutation(subject_obj,available_mutations)
+        if subject_obj.next_mutation:
+            selected_mutation = subject_obj.next_mutation
+        else:
+            available_mutations = await self.get_case(GetAvailableMutationsForSubject).execute(subject_obj.id, mutation_class)
+            selected_mutation = self.select_mutation(subject_obj,available_mutations)
 
     
         mutation_obj = MutationProcess(
@@ -160,9 +162,36 @@ class SetMutProcessResult(UseCase):
         if not mutation: return None
         if mutation.confirmation_code != confirmation_code:
             raise BaseCustomException("wrong confirmation code")
-        case = self.get_case(SupressMutProcess)
-        await case.execute(mutation.id, success_points)
 
+        points = [1]*success_points+[0]*(mutation.complexity-success_points)
+        success = random.choice(points)
+
+        if success:
+            case = self.get_case(SupressMutProcess)
+            await case.execute(mutation.id, success_points)
+        else:
+            case = self.get_case(CompleteMutProcess)
+            await case.execute(mutation.id)
+
+        return {
+            "mutation":mutation.name,
+            "supressed": success
+        }
+
+class AssignNextMutation(UseCase):
+    async def execute(self, subject_id: int, mutation_name: str):
+        mutation_names: List[str] = [m.name for m in self.mutation_repo.get()]
+        if mutation_name not in mutation_names:
+            raise BaseCustomException("wrong mutation name")
+        subject_obj: Subject = self.subject_repo.get_by_id(subject_id)
+        subject_obj.next_mutation = mutation_name
+        self.subject_repo.update(subject_id,subject_obj)
+
+        case:GetCurrentMutProcess = self.get_case(GetCurrentMutProcess)
+        current_mut_process:None|MutationProcess = await case.execute(subject_id)
+        if current_mut_process!=None:
+            current_mut_process.name = mutation_name
+            self.mutprocess_repo.update(current_mut_process.id, current_mut_process)
 
 class CheckTimeoutedMutProcesses(UseCase):
     async def execute(self):

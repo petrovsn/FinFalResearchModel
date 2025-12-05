@@ -41,8 +41,8 @@ class SetNextMutation(UseCase):
 
 
 class GetAllSubjectsCase(UseCase):
-    async def execute(self):
-        dto_result: List[Subject] = self.subject_repo.get()
+    async def execute(self, filters, offset, count, sorting_key, sorting_desc):
+        dto_result: List[Subject] = self.subject_repo.get(filters, offset, count, sorting_key, sorting_desc)
         result = []
         get_subj_info_case = GetFullSubjectInfoCase(**self.get_infrastructure_copy())
         for subject_obj in dto_result:
@@ -50,11 +50,7 @@ class GetAllSubjectsCase(UseCase):
             result.append(subject_out)     
         return result
 
-class GetAllSubjectsCase(UseCase):
-    async def execute(self, filters, offset, count, sorting_key, sorting_desc):
-        filters_dict = {}
-        result = self.subject_repo.get(filters_dict, offset, count, sorting_key, sorting_desc)
-        return result
+
     
 class GetSubjectInfoCase(UseCase):
     async def execute(self, subject_id):
