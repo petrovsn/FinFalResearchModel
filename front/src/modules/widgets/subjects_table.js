@@ -66,29 +66,49 @@ export class SubjectsTable extends React.Component {
         let buttons_block = [
             <button onClick={subjects_controller.update_content}>{locales.get("update")}</button>,
         ]
-        if (subjects_controller.get_selected_item()) {
-            if (this.props.mode == "senior") {
-                buttons_block.push(<button onClick={this.on_change_assignment}>{locales.get("assign_doctor")}</button>)
-                buttons_block.push(<button onClick={this.on_get_stat_history}>{locales.get("get_stats_history")}</button>)
-            }
-            else if (this.props.mode == "doctor") {
-                buttons_block.push(<button onClick={this.on_inject_drugs}>{locales.get("inject_drugs")}</button>)
-                buttons_block.push(<button onClick={this.on_inject_mako}>{locales.get("inject_mako")}</button>)
-                buttons_block.push(<button onClick={this.on_complete_task}>{locales.get("complete_task")}</button>)
+        let options = subjects_controller.get_options(this.props.mode)
+        for( let i in options){
+            let option = options[i]
+            switch  (option){
+                case "assign_doctor":{
+                    buttons_block.push(<button onClick={this.on_change_assignment}>{locales.get("assign_doctor")}</button>)
+                    break;
+                }
+                case "get_stats_history":{
+                    buttons_block.push(<button onClick={this.on_get_stat_history}>{locales.get("get_stats_history")}</button>)
+                    break;
+                }
+                case "view_subject":{
+                    buttons_block.push(<button onClick={this.on_view_subject}>{locales.get("view_subject")}</button>)
+                    break;
+                }
+                case "inject_drugs":{
+                    buttons_block.push(<button onClick={this.on_inject_drugs}>{locales.get("inject_drugs")}</button>)
+                
+                    break;
+                }
+                case "inject_mako":{
+                    buttons_block.push(<button onClick={this.on_inject_mako}>{locales.get("inject_mako")}</button>)
+                    break;
+                }
+                case "inject_jenova":{
+                    buttons_block.push(<button onClick={this.on_inject_jenova}>{locales.get("inject_jenova")}</button>)
+                    break;
+                }
+                case "assign_doctor":{
+                    buttons_block.push(<button onClick={this.on_complete_task}>{locales.get("complete_task")}</button>)
+                    break;
+                }
+                case "proceed_mutation":{
                 buttons_block.push(<button onClick={this.on_proceed_mutation}>{locales.get("proceed_mutation")}</button>)
-                buttons_block.push(<button onClick={this.on_get_stat_history}>{locales.get("get_stats_history")}</button>)
-            }
-            else if (this.props.mode == "master") {
-                buttons_block.push(<button onClick={this.on_view_subject}>{locales.get("view_subject")}</button>)
+                    break;
+                }
+                case "set_subject_status":{
+                
                 buttons_block.push(<button onClick={this.on_change_status}>{locales.get("set_subject_status")}</button>)
-                buttons_block.push(<button onClick={this.on_inject_drugs}>{locales.get("inject_drugs")}</button>)
-                buttons_block.push(<button onClick={this.on_inject_mako}>{locales.get("inject_mako")}</button>)
-                buttons_block.push(<button onClick={this.on_complete_task}>{locales.get("complete_task")}</button>)
-                buttons_block.push(<button onClick={this.on_inject_jenova}>{locales.get("inject_jenova")}</button>)
-                buttons_block.push(<button onClick={this.on_get_stat_history}>{locales.get("get_stats_history")}</button>)
-                buttons_block.push(<button onClick={this.on_change_assignment}>{locales.get("assign_doctor")}</button>)
+                    break;
+                }
             }
-
         }
         return <div className="table_actions_block">
             {buttons_block}

@@ -82,6 +82,14 @@ async def put_change_user(
     result = case.execute(user_login, user_data)
     return await result
 
+@user_router.put("/my_profile")
+async def get_my_profile(
+    infrastucture_params: dict = Depends(get_InfrastuctureAssemblyParams),
+    user_request_data=Depends(AuthService().has_role(None))):
+    case: UpdateUserCase = UseCaseFactory.get(UpdateUserCase,infrastucture_params,
+                                               user_request_data)
+    result = case.execute(user_login, user_data)
+    return await result
 
 @user_router.post("/import")
 async def import_users(userimportdata: CsvImportData, 

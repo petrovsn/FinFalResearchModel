@@ -93,6 +93,21 @@ class SubjectOut(BaseModel):
 
     mutations: List[str] = []
 
+class SubjectPersonalProfile(BaseModel):
+    name: str
+    doctor_name: str = ""
+    status: str
+    mental_stability: int = 100
+    cell_stability: int = 100
+    jenova_cells: int = 0
+    
+    stats_health: int = 0
+    stats_reaction: int = 0
+    stats_strength: int = 0
+
+    mutations: Dict[str, str] = {}
+
+
 class Subject(BaseModel):
     id: int|None = None
     name: str

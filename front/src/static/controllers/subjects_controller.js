@@ -43,6 +43,50 @@ class SubjectsController extends CommonTableController {
         finfal_rc.create_subject(name).then((data) => { this.update_content() })
     }
 
+
+    get_options = (mode) =>{
+        if (mode == "senior"){
+            return ["assign_doctor", "get_stats_history"]
+        }
+        if (mode == "master"){
+            return ["assign_doctor", "get_stats_history", "view_subject", 
+                "inject_drugs", "inject_mako", "inject_jenova",
+                "complete_task", "proceed_mutation", ]
+        }
+        if (mode == "doctor"){
+            let selected_item = this.get_selected_item()
+            if (!selected_item) return []
+            else{
+                switch (selected_item.status){
+                    case "ready":{
+                        return ["get_stats_history","inject_drugs", "inject_mako"]
+                        break;
+                    }
+                    case "injected":{
+                        return ["inject_drugs", "inject_mako"]
+                        break;
+                    }
+                    case "on_rest":{
+                        return ["get_stats_history", "complete_task"]
+                        break;
+                    }
+                    case "mutation":{
+                        return ["get_stats_history", "proceed_mutation"]
+                        break;
+                    }
+                    case "disabled":{
+                        return []
+                        break;
+                    }
+                    default: {
+                        break;
+                    }
+                }
+            }
+        }
+
+    }
+
     delete(item) {
         if (!item) return
         finfal_rc.delete_subject(item["id"]).then(() => { this.update_content() })

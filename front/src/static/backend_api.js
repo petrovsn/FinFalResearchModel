@@ -710,6 +710,18 @@ export class FinFalResearchCenter {
         let data = await http_request(url + `/utils/config`, "POST", header, body)
         return data
     }
+
+    async get_my_profile(){
+        let url = config_loader.get_server_url()
+        let header = {
+            'Authorization': `Bearer ${this.token}`,
+        }
+
+        let body = JSON.stringify(new_config)
+
+        let data = await http_request(url + `/utils/config`, "POST", header, body)
+        return data
+    }
 }
 
 
